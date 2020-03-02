@@ -49,7 +49,7 @@ impl Task {
   pub fn create_task(&self, task_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     let xml = self.to_xml()?;
 
-    api::create(task_name, &xml)?;
+    api::create_task(task_name, &xml)?;
 
     Ok(())
   }
@@ -318,7 +318,7 @@ impl Default for Settings {
   }
 }
 
-/// default IgnoreNew
+/// default `IgnoreNew`
 #[derive(Debug)]
 pub enum MultipleInstancesPolicy {
   IgnoreNew,

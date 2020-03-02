@@ -91,7 +91,7 @@ where
   }
 }
 
-pub fn create(task_name: &str, xml: &str) -> Result<(), WinError> {
+pub fn create_task(task_name: &str, xml: &str) -> Result<(), WinError> {
   try_hresult!(
     unsafe { CoInitializeEx(NULL, COINIT_MULTITHREADED) },
     "CoInitializeEx failed"
@@ -215,7 +215,7 @@ fn _bstr_t(s: &str) -> BSTR {
 
 #[test]
 fn test_create() {
-  create(
+  create_task(
     "Useless Task",
     r#"<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
       <Triggers />
