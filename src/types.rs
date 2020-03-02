@@ -82,7 +82,7 @@ impl Task {
               writer.write(XmlEvent::start_element("EventTrigger"))?;
               {
                 element_body!(writer, "Enabled", enabled);
-                element_body!(writer, "Subscription", subscription);
+                element_body!(writer, "Subscription", subscription.to_xml()?);
                 if !value_queries.is_empty() {
                   writer.write(XmlEvent::start_element("ValueQueries"))?;
 
@@ -195,9 +195,60 @@ impl Task {
 pub enum Trigger {
   EventTrigger {
     enabled: bool,
-    subscription: String,
+    subscription: Subscription,
     value_queries: Vec<Value>,
   },
+}
+
+#[derive(Debug)]
+pub struct Subscription {
+  pub log: String,
+  pub source: String,
+  pub event_id: Option<isize>,
+}
+impl Subscription {
+  pub fn to_xml(&self) -> Result<String, Box<dyn std::error::Error>> {
+    let mut out = Vec::new();
+    let mut writer = EmitterConfig::new()
+      .write_document_declaration(false)
+      .create_writer(&mut out);
+
+    writer.write(XmlEvent::start_element("QueryList"))?;
+    {
+      writer.write(
+        XmlEvent::start_element("Query")
+          .attr("Id", "0")
+          .attr("Path", &self.log),
+      )?;
+      {
+        writer.write(XmlEvent::start_element("Select").attr("Path", &self.log))?;
+
+        if let Some(event_id) = self.event_id {
+          writer.write(XmlEvent::characters(&format!(
+            "*[System[Provider[@Name='{}'] and EventID={}]]",
+            self.source, event_id
+          )))?;
+        } else {
+          writer.write(XmlEvent::characters(&format!(
+            "*[System[Provider[@Name='{}']]]",
+            self.source
+          )))?;
+        }
+
+        writer.write(XmlEvent::end_element())?;
+      }
+      writer.write(XmlEvent::end_element())?;
+    }
+    writer.write(XmlEvent::end_element())?;
+
+    // <QueryList>
+    // <Query Id="0" Path="System">
+    // <Select Path="System">*[System[Provider[@Name='Microsoft-Windows-WindowsUpdateClient']]]</Select>
+    // </Query>
+    // </QueryList>
+
+    Ok(String::from_utf8(out)?)
+  }
 }
 
 #[derive(Debug)]
@@ -308,8 +359,11 @@ fn test_xml() {
   let mut task = Task::default();
   task.triggers.push(Trigger::EventTrigger {
     enabled: true,
-    subscription: r#"<QueryList><Query Id="0" Path="System"><Select Path="System">*[System[Provider[@Name='Microsoft-Windows-WindowsUpdateClient']]]</Select></Query></QueryList>"#
-      .to_string(),
+    subscription: Subscription {
+      log: "System".to_string(),
+      source: "Microsoft-Windows-WindowsUpdateClient".to_string(),
+      event_id: None,
+    },
     value_queries: vec![
       Value {
         name: "title".to_string(),
@@ -339,5 +393,5 @@ fn test_xml() {
   let xml = task.to_xml().unwrap();
   println!("{}", xml);
 
-  // crate::api::create("temp", &xml).unwrap();
+  // task.create_task("asdfasdf").unwrap();
 }
