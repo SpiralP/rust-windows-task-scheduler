@@ -1,0 +1,10 @@
+[package]
+name = "rust-windows-task-scheduler"
+version = "0.1.0"
+authors = ["SpiralP <spiral.palmer@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+widestring = "0.4.0"
+winapi = { version = "0.3.8", features = ["combaseapi", "objbase", "winerror", "taskschd", "impl-default", "oleauto", "wincred"] }
+xml-rs = "0.8.0"
