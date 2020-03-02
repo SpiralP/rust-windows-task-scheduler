@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Action",""],["MultipleInstancesPolicy","default `IgnoreNew`"],["Trigger",""],["Version","default 1.2"]],"fn":[["create_task",""]],"struct":[["IdleSettings",""],["Settings",""],["Subscription",""],["Task",""],["Value",""],["WinError",""]]});
+initSidebarItems({"enum":[["Action",""],["MultipleInstancesPolicy","default `IgnoreNew`"],["Trigger",""],["Version","default 1.2"]],"fn":[["create_task",""],["delete_task",""]],"struct":[["IdleSettings",""],["Settings",""],["Subscription",""],["Task",""],["Value",""],["WinError",""]]});
