@@ -212,41 +212,6 @@
 <span id="212">212</span>
 <span id="213">213</span>
 <span id="214">214</span>
-<span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryInto</span>, <span class="ident">ptr</span>};
 <span class="kw">use</span> <span class="ident">widestring</span>::<span class="ident">WideCString</span>;
@@ -461,41 +426,6 @@
 
   <span class="comment">// copies input string pointer to special storage</span>
   <span class="kw">unsafe</span> { <span class="ident">SysAllocString</span>(<span class="ident">s</span>.<span class="ident">as_ptr</span>()) }
-}
-
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_create</span>() {
-  <span class="ident">create_task</span>(
-    <span class="string">&quot;Useless Task&quot;</span>,
-    <span class="string">r#&quot;&lt;Task version=&quot;1.2&quot; xmlns=&quot;http://schemas.microsoft.com/windows/2004/02/mit/task&quot;&gt;
-      &lt;Triggers /&gt;
-      &lt;Settings&gt;
-        &lt;MultipleInstancesPolicy&gt;IgnoreNew&lt;/MultipleInstancesPolicy&gt;
-        &lt;DisallowStartIfOnBatteries&gt;true&lt;/DisallowStartIfOnBatteries&gt;
-        &lt;StopIfGoingOnBatteries&gt;true&lt;/StopIfGoingOnBatteries&gt;
-        &lt;AllowHardTerminate&gt;true&lt;/AllowHardTerminate&gt;
-        &lt;StartWhenAvailable&gt;false&lt;/StartWhenAvailable&gt;
-        &lt;RunOnlyIfNetworkAvailable&gt;false&lt;/RunOnlyIfNetworkAvailable&gt;
-        &lt;IdleSettings&gt;
-          &lt;StopOnIdleEnd&gt;true&lt;/StopOnIdleEnd&gt;
-          &lt;RestartOnIdle&gt;false&lt;/RestartOnIdle&gt;
-        &lt;/IdleSettings&gt;
-        &lt;AllowStartOnDemand&gt;true&lt;/AllowStartOnDemand&gt;
-        &lt;Enabled&gt;true&lt;/Enabled&gt;
-        &lt;Hidden&gt;false&lt;/Hidden&gt;
-        &lt;RunOnlyIfIdle&gt;false&lt;/RunOnlyIfIdle&gt;
-        &lt;WakeToRun&gt;false&lt;/WakeToRun&gt;
-        &lt;ExecutionTimeLimit&gt;PT72H&lt;/ExecutionTimeLimit&gt;
-        &lt;Priority&gt;7&lt;/Priority&gt;
-      &lt;/Settings&gt;
-      &lt;Actions Context=&quot;Author&quot;&gt;
-        &lt;Exec&gt;
-          &lt;Command&gt;PROGRAM&lt;/Command&gt;
-        &lt;/Exec&gt;
-      &lt;/Actions&gt;
-    &lt;/Task&gt;&quot;#</span>,
-  )
-  .<span class="ident">unwrap</span>();
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "windows_task_scheduler";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
