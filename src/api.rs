@@ -1,4 +1,10 @@
-use std::{convert::TryInto, ptr};
+use std::{
+  convert::TryInto,
+  error,
+  fmt::{self, Debug, Display, Formatter},
+  ops::Deref,
+  ptr,
+};
 use widestring::WideCString;
 use winapi::{
   ctypes::c_void,
@@ -29,7 +35,6 @@ pub struct WinError {
   message: Option<String>,
 }
 
-use std::fmt::{self, Debug, Display, Formatter};
 impl Display for WinError {
   fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
     if let Some(message) = &self.message {
@@ -39,7 +44,7 @@ impl Display for WinError {
     }
   }
 }
-impl std::error::Error for WinError {}
+impl error::Error for WinError {}
 
 macro_rules! try_hresult {
   ($expr:expr) => {
@@ -123,8 +128,6 @@ where
 
   f()
 }
-
-use std::ops::Deref;
 
 fn with_dispatch<U, T>(dispatch: &U, f: T) -> Result<(), WinError>
 where
