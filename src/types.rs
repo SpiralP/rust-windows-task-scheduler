@@ -1,5 +1,6 @@
 //! https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-schema
 
+use crate::api;
 use std::fmt::{self, Display, Formatter};
 use xml::writer::{EmitterConfig, XmlEvent};
 
@@ -45,6 +46,14 @@ pub struct Task {
   pub settings: Settings,
 }
 impl Task {
+  pub fn create_task(&self, task_name: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let xml = self.to_xml()?;
+
+    api::create(task_name, &xml)?;
+
+    Ok(())
+  }
+
   pub fn to_xml(&self) -> Result<String, Box<dyn std::error::Error>> {
     let mut out = Vec::new();
     let mut writer = EmitterConfig::new()

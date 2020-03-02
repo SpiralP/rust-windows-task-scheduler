@@ -22,13 +22,14 @@ use winapi::{
   Class, Interface,
 };
 
+#[derive(Debug)]
 pub struct WinError {
   result: HRESULT,
   message: Option<String>,
 }
 
-use std::fmt::{self, Debug, Formatter};
-impl Debug for WinError {
+use std::fmt::{self, Debug, Display, Formatter};
+impl Display for WinError {
   fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), fmt::Error> {
     if let Some(message) = &self.message {
       write!(f, "WinError {:#X} : {}", self.result, message)
@@ -37,6 +38,7 @@ impl Debug for WinError {
     }
   }
 }
+impl std::error::Error for WinError {}
 
 macro_rules! try_hresult {
   ($expr:expr) => {
