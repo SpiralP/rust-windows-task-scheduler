@@ -91,12 +91,14 @@ where
   }
 }
 
-pub fn create_task(task_name: &str, xml: &str) -> Result<(), WinError> {
+fn with_com<T>(f: T) -> Result<(), WinError>
+where
+  T: FnOnce() -> Result<(), WinError>,
+{
   try_hresult!(
     unsafe { CoInitializeEx(NULL, COINIT_MULTITHREADED) },
     "CoInitializeEx failed"
   );
-
   let _couninit = ondrop(|| unsafe {
     CoUninitialize();
   });
@@ -119,91 +121,136 @@ pub fn create_task(task_name: &str, xml: &str) -> Result<(), WinError> {
     "CoInitializeSecurity failed"
   );
 
-  let mut p_service: *mut c_void = ptr::null_mut();
-  try_hresult!(
-    unsafe {
-      CoCreateInstance(
-        &TaskScheduler::uuidof(),
-        NULL as _,
-        CLSCTX_INPROC_SERVER,
-        &ITaskService::uuidof(),
-        &mut p_service as _,
-      )
-    },
-    "Failed to create an instance of ITaskService"
-  );
+  f()
+}
 
-  let p_service: &mut ITaskService = unsafe { &mut *(p_service as *mut ITaskService) };
-  let _p_service = ondrop(|| {
-    unsafe { p_service.Release() };
+use std::ops::Deref;
+
+fn with_dispatch<U, T>(dispatch: &U, f: T) -> Result<(), WinError>
+where
+  U: Deref<Target = winapi::um::oaidl::IDispatch>,
+  T: FnOnce(&U) -> Result<(), WinError>,
+{
+  let _drop = ondrop(|| {
+    unsafe { dispatch.Release() };
   });
 
-  //  Connect to the task service.
-  try_hresult!(
-    unsafe {
-      p_service.Connect(
-        VARIANT::default(),
-        VARIANT::default(),
-        VARIANT::default(),
-        VARIANT::default(),
-      )
-    },
-    "ITaskService::Connect failed"
-  );
+  f(dispatch)
+}
 
-  let mut p_root_folder: *mut ITaskFolder = ptr::null_mut();
-  try_hresult!(
-    unsafe { p_service.GetFolder(_bstr_t("\\"), &mut p_root_folder) },
-    "Cannot get Root Folder pointer"
-  );
+fn with_folder<T>(folder_path: &str, f: T) -> Result<(), WinError>
+where
+  T: FnOnce(&ITaskFolder, &ITaskService) -> Result<(), WinError>,
+{
+  with_com(|| {
+    with_dispatch(
+      {
+        let mut p_service: *mut c_void = ptr::null_mut();
+        try_hresult!(
+          unsafe {
+            CoCreateInstance(
+              &TaskScheduler::uuidof(),
+              NULL as _,
+              CLSCTX_INPROC_SERVER,
+              &ITaskService::uuidof(),
+              &mut p_service as _,
+            )
+          },
+          "Failed to create an instance of ITaskService"
+        );
 
-  let p_root_folder = unsafe { &mut *p_root_folder };
-  let _p_root_folder = ondrop(|| unsafe {
-    p_root_folder.Release();
-  });
+        unsafe { &*(p_service as *mut ITaskService) }
+      },
+      |p_service| {
+        //  Connect to the task service.
+        try_hresult!(
+          unsafe {
+            p_service.Connect(
+              VARIANT::default(),
+              VARIANT::default(),
+              VARIANT::default(),
+              VARIANT::default(),
+            )
+          },
+          "ITaskService::Connect failed"
+        );
 
-  //  If the same task exists, remove it.
-  let _ignore = unsafe { p_root_folder.DeleteTask(_bstr_t(task_name), 0) };
+        with_dispatch(
+          {
+            let mut p_root_folder: *mut ITaskFolder = ptr::null_mut();
+            try_hresult!(
+              unsafe { p_service.GetFolder(_bstr_t(folder_path), &mut p_root_folder) },
+              "Cannot get Root Folder pointer"
+            );
 
-  //  Create the task builder object to create the task.
-  let mut p_task: *mut ITaskDefinition = ptr::null_mut();
-  try_hresult!(
-    unsafe { p_service.NewTask(0, &mut p_task) },
-    "Failed to create a task definition"
-  );
+            unsafe { &*p_root_folder }
+          },
+          |p_root_folder| f(p_root_folder, p_service),
+        )
+      },
+    )
+  })
+}
 
-  let p_task = unsafe { &mut *p_task };
-  let _p_task = ondrop(|| unsafe {
-    p_task.Release();
-  });
+pub fn delete_task(task_name: &str) -> Result<(), WinError> {
+  with_folder("\\", |p_root_folder, _p_service| {
+    //  If the same task exists, remove it.
+    try_hresult!(unsafe { p_root_folder.DeleteTask(_bstr_t(task_name), 0) });
 
-  try_hresult!(unsafe { p_task.put_XmlText(_bstr_t(xml,)) });
+    Ok(())
+  })
+}
 
-  //  ------------------------------------------------------
-  //  Save the task in the root folder.
-  let mut p_registered_task: *mut IRegisteredTask = ptr::null_mut();
-  try_hresult!(
-    unsafe {
-      p_root_folder.RegisterTaskDefinition(
-        _bstr_t(task_name),
-        p_task,
-        TASK_CREATE_OR_UPDATE.try_into().unwrap(),
-        VARIANT::default(),
-        VARIANT::default(),
-        TASK_LOGON_INTERACTIVE_TOKEN,
-        VARIANT::default(),
-        &mut p_registered_task,
-      )
-    },
-    "Error saving the Task"
-  );
+pub fn create_task(task_name: &str, xml: &str) -> Result<(), WinError> {
+  with_folder("\\", |p_root_folder, p_service| {
+    //  If the same task exists, remove it.
+    let _ignore = unsafe { p_root_folder.DeleteTask(_bstr_t(task_name), 0) };
 
-  let p_registered_task = unsafe { &mut *p_registered_task };
-  let _p_registered_task = ondrop(|| unsafe {
-    p_registered_task.Release();
-  });
+    with_dispatch(
+      {
+        //  Create the task builder object to create the task.
+        let mut p_task: *mut ITaskDefinition = ptr::null_mut();
+        try_hresult!(
+          unsafe { p_service.NewTask(0, &mut p_task) },
+          "Failed to create a task definition"
+        );
 
-  Ok(())
+        unsafe { &*p_task }
+      },
+      |p_task| {
+        try_hresult!(unsafe { p_task.put_XmlText(_bstr_t(xml)) });
+
+        with_dispatch(
+          {
+            //  ------------------------------------------------------
+            //  Save the task in the root folder.
+            let mut p_registered_task: *mut IRegisteredTask = ptr::null_mut();
+            try_hresult!(
+              unsafe {
+                p_root_folder.RegisterTaskDefinition(
+                  _bstr_t(task_name),
+                  p_task,
+                  TASK_CREATE_OR_UPDATE.try_into().unwrap(),
+                  VARIANT::default(),
+                  VARIANT::default(),
+                  TASK_LOGON_INTERACTIVE_TOKEN,
+                  VARIANT::default(),
+                  &mut p_registered_task,
+                )
+              },
+              "Error saving the Task"
+            );
+
+            unsafe { &mut *p_registered_task }
+          },
+          |_p_registered_task| {
+            //
+            Ok(())
+          },
+        )
+      },
+    )
+  })
 }
 
 fn _bstr_t(s: &str) -> BSTR {
