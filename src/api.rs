@@ -31,8 +31,8 @@ use winapi::{
 #[derive(Debug)]
 pub struct WinError {
   /// https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-error-and-success-constants
-  result: HRESULT,
-  message: Option<String>,
+  pub result: HRESULT,
+  pub message: Option<String>,
 }
 
 impl Display for WinError {
