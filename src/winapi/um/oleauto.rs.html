@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.8\src\um\oleauto.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>oleauto.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\oleauto.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>oleauto.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -834,738 +834,752 @@
 <span id="834">834</span>
 <span id="835">835</span>
 <span id="836">836</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Licensed under the Apache License, Version 2.0</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
 <span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
 <span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
 <span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
 <span class="comment">// except according to those terms.</span>
 <span class="doccomment">//! Mappings for the contents of OleAuto.h</span>
 <span class="kw">use</span> <span class="ident">ctypes</span>::{<span class="ident">c_double</span>, <span class="ident">c_float</span>, <span class="ident">c_int</span>, <span class="ident">c_uint</span>, <span class="ident">c_void</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">basetsd</span>::{<span class="ident">LONG64</span>, <span class="ident">ULONG64</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">minwindef</span>::{<span class="ident">BYTE</span>, <span class="ident">DWORD</span>, <span class="ident">FLOAT</span>, <span class="ident">UINT</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>, <span class="ident">WORD</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">wtypes</span>::{<span class="ident">BSTR</span>, <span class="ident">DATE</span>, <span class="ident">DECIMAL</span>, <span class="ident">LPBSTR</span>, <span class="ident">LPDECIMAL</span>, <span class="ident">VARTYPE</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">wtypesbase</span>::{<span class="ident">DOUBLE</span>, <span class="ident">LPCOLESTR</span>, <span class="ident">LPOLESTR</span>, <span class="ident">OLECHAR</span>};
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">minwinbase</span>::<span class="ident">LPSYSTEMTIME</span>;
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">oaidl</span>::{<span class="ident">DISPID_UNKNOWN</span>, <span class="ident">ITypeLib</span>, <span class="ident">SAFEARRAY</span>, <span class="ident">VARIANT</span>, <span class="ident">VARIANTARG</span>};
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">winnt</span>::{<span class="ident">CHAR</span>, <span class="ident">HRESULT</span>, <span class="ident">INT</span>, <span class="ident">LCID</span>, <span class="ident">LONG</span>, <span class="ident">LPCSTR</span>, <span class="ident">SHORT</span>};
+<span class="kw">use</span> <span class="ident">shared::basetsd</span>::{<span class="ident">LONG64</span>, <span class="ident">ULONG64</span>};
+<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">BYTE</span>, <span class="ident">DWORD</span>, <span class="ident">FLOAT</span>, <span class="ident">UINT</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>, <span class="ident">WORD</span>};
+<span class="kw">use</span> <span class="ident">shared::wtypes</span>::{<span class="ident">BSTR</span>, <span class="ident">DATE</span>, <span class="ident">DECIMAL</span>, <span class="ident">LPBSTR</span>, <span class="ident">LPDECIMAL</span>, <span class="ident">VARTYPE</span>};
+<span class="kw">use</span> <span class="ident">shared::wtypesbase</span>::{<span class="ident">DOUBLE</span>, <span class="ident">LPCOLESTR</span>, <span class="ident">LPOLESTR</span>, <span class="ident">OLECHAR</span>};
+<span class="kw">use</span> <span class="ident">um::minwinbase::LPSYSTEMTIME</span>;
+<span class="kw">use</span> <span class="ident">um::oaidl</span>::{
+    <span class="ident">DISPID_UNKNOWN</span>, <span class="ident">ICreateErrorInfo</span>, <span class="ident">IErrorInfo</span>, <span class="ident">ITypeLib</span>, <span class="ident">SAFEARRAY</span>, <span class="ident">VARIANT</span>, <span class="ident">VARIANTARG</span>
+};
+<span class="kw">use</span> <span class="ident">um::winnt</span>::{<span class="ident">CHAR</span>, <span class="ident">HRESULT</span>, <span class="ident">INT</span>, <span class="ident">LCID</span>, <span class="ident">LONG</span>, <span class="ident">LPCSTR</span>, <span class="ident">SHORT</span>};
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysAllocString</span>(
-        <span class="ident">psz</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">OLECHAR</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BSTR</span>;
+        <span class="ident">psz</span>: <span class="kw-2">*const</span> <span class="ident">OLECHAR</span>,
+    ) -&gt; <span class="ident">BSTR</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysReAllocString</span>(
-        <span class="ident">pbstr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
-        <span class="ident">psz</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">OLECHAR</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+        <span class="ident">pbstr</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">psz</span>: <span class="kw-2">*const</span> <span class="ident">OLECHAR</span>,
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysAllocStringLen</span>(
-        <span class="ident">strIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">OLECHAR</span>,
+        <span class="ident">strIn</span>: <span class="kw-2">*const</span> <span class="ident">OLECHAR</span>,
         <span class="ident">ui</span>: <span class="ident">UINT</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BSTR</span>;
+    ) -&gt; <span class="ident">BSTR</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysReAllocStringLen</span>(
-        <span class="ident">pbstr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
-        <span class="ident">psz</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">OLECHAR</span>,
+        <span class="ident">pbstr</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">psz</span>: <span class="kw-2">*const</span> <span class="ident">OLECHAR</span>,
         <span class="ident">len</span>: <span class="ident">c_uint</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysFreeString</span>(
         <span class="ident">bstrString</span>: <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysStringLen</span>(
         <span class="ident">pbstr</span>: <span class="ident">BSTR</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UINT</span>;
+    ) -&gt; <span class="ident">UINT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysStringByteLen</span>(
         <span class="ident">bstr</span>: <span class="ident">BSTR</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UINT</span>;
+    ) -&gt; <span class="ident">UINT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SysAllocStringByteLen</span>(
         <span class="ident">psz</span>: <span class="ident">LPCSTR</span>,
         <span class="ident">len</span>: <span class="ident">UINT</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BSTR</span>;
+    ) -&gt; <span class="ident">BSTR</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">DosDateTimeToVariantTime</span>(
         <span class="ident">wDosDate</span>: <span class="ident">USHORT</span>,
         <span class="ident">wDosTime</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pvtime</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+        <span class="ident">pvtime</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantTimeToDosDateTime</span>(
         <span class="ident">vtime</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pwDosDate</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
-        <span class="ident">pwDosTime</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+        <span class="ident">pwDosDate</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">pwDosTime</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SystemTimeToVariantTime</span>(
         <span class="ident">lpSystemTime</span>: <span class="ident">LPSYSTEMTIME</span>,
-        <span class="ident">pvtime</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+        <span class="ident">pvtime</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantTimeToSystemTime</span>(
         <span class="ident">vtime</span>: <span class="ident">DOUBLE</span>,
         <span class="ident">lpSystemTime</span>: <span class="ident">LPSYSTEMTIME</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INT</span>;
+    ) -&gt; <span class="ident">INT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayAccessData</span>(
-        <span class="ident">psa</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>,
-        <span class="ident">ppvData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">psa</span>: <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>,
+        <span class="ident">ppvData</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayUnaccessData</span>(
-        <span class="ident">psa</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">psa</span>: <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayCreateVector</span>(
         <span class="ident">vt</span>: <span class="ident">VARTYPE</span>,
         <span class="ident">lLbound</span>: <span class="ident">LONG</span>,
         <span class="ident">cElements</span>: <span class="ident">ULONG</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>;
+    ) -&gt; <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayGetLBound</span>(
-        <span class="ident">psa</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>,
+        <span class="ident">psa</span>: <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>,
         <span class="ident">nDim</span>: <span class="ident">UINT</span>,
-        <span class="ident">plLbound</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">plLbound</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayGetUBound</span>(
-        <span class="ident">psa</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>,
+        <span class="ident">psa</span>: <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>,
         <span class="ident">nDim</span>: <span class="ident">UINT</span>,
-        <span class="ident">plUbound</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">plUbound</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SafeArrayDestroy</span>(
-        <span class="ident">psa</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SAFEARRAY</span>
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">psa</span>: <span class="kw-2">*mut</span> <span class="ident">SAFEARRAY</span>
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantInit</span>(
-        <span class="ident">pvarg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvarg</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANTARG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantClear</span>(
-        <span class="ident">pvarg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANTARG</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">pvarg</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANTARG</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantCopy</span>(
-        <span class="ident">pvargDest</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANTARG</span>,
-        <span class="ident">pvargSrc</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VARIANTARG</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">pvargDest</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvargSrc</span>: <span class="kw-2">*const</span> <span class="ident">VARIANTARG</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantCopyInd</span>(
-        <span class="ident">pvarDest</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANT</span>,
-        <span class="ident">pvargSrc</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VARIANTARG</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">pvarDest</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANT</span>,
+        <span class="ident">pvargSrc</span>: <span class="kw-2">*const</span> <span class="ident">VARIANTARG</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantChangeType</span>(
-        <span class="ident">pvargDest</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANTARG</span>,
-        <span class="ident">pvarSrc</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvargDest</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvarSrc</span>: <span class="kw-2">*const</span> <span class="ident">VARIANTARG</span>,
         <span class="ident">wFlags</span>: <span class="ident">USHORT</span>,
         <span class="ident">vt</span>: <span class="ident">VARTYPE</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VariantChangeTypeEx</span>(
-        <span class="ident">pvargDest</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VARIANTARG</span>,
-        <span class="ident">pvarSrc</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvargDest</span>: <span class="kw-2">*mut</span> <span class="ident">VARIANTARG</span>,
+        <span class="ident">pvarSrc</span>: <span class="kw-2">*const</span> <span class="ident">VARIANTARG</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">wFlags</span>: <span class="ident">USHORT</span>,
         <span class="ident">vt</span>: <span class="ident">VARTYPE</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI1FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pbOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pbOut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI2FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">psOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SHORT</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">psOut</span>: <span class="kw-2">*mut</span> <span class="ident">SHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI4FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">LONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarI8FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LONG64</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">LONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pfltOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLOAT</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pfltOut</span>: <span class="kw-2">*mut</span> <span class="ident">FLOAT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pdblOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DOUBLE</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdblOut</span>: <span class="kw-2">*mut</span> <span class="ident">DOUBLE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDateFromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pdateOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DATE</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdateOut</span>: <span class="kw-2">*mut</span> <span class="ident">DATE</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromUI1</span>(
         <span class="ident">bVal</span>: <span class="ident">BYTE</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromI2</span>(
         <span class="ident">iVal</span>: <span class="ident">SHORT</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarBstrFromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pbstrOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>,
+        <span class="ident">pbstrOut</span>: <span class="kw-2">*mut</span> <span class="ident">BSTR</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromUI8</span>(
         <span class="ident">i64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI2FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">puiOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">USHORT</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">puiOut</span>: <span class="kw-2">*mut</span> <span class="ident">USHORT</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">plOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">plOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI4FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pulOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pulOut</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromI2</span>(
         <span class="ident">sIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarUI8FromDec</span>(
-        <span class="ident">pdecIn</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">DECIMAL</span>,
-        <span class="ident">pi64Out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ULONG64</span>,
+        <span class="ident">pdecIn</span>: <span class="kw-2">*const</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pi64Out</span>: <span class="kw-2">*mut</span> <span class="ident">ULONG64</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromUI1</span>(
         <span class="ident">bIn</span>: <span class="ident">BYTE</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">SHORT</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromI4</span>(
         <span class="ident">lIn</span>: <span class="ident">LONG</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromI8</span>(
         <span class="ident">i64In</span>: <span class="ident">LONG64</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromR4</span>(
         <span class="ident">fltIn</span>: <span class="ident">FLOAT</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromR8</span>(
         <span class="ident">dblIn</span>: <span class="ident">DOUBLE</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromDate</span>(
         <span class="ident">dateIn</span>: <span class="ident">DATE</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromStr</span>(
         <span class="ident">strIn</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
         <span class="ident">dwFlags</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromI1</span>(
         <span class="ident">cIn</span>: <span class="ident">CHAR</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromUI2</span>(
         <span class="ident">uiIn</span>: <span class="ident">USHORT</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromUI4</span>(
         <span class="ident">ulIn</span>: <span class="ident">ULONG</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecFromUI8</span>(
         <span class="ident">ui64In</span>: <span class="ident">ULONG64</span>,
-        <span class="ident">pdecOut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>,
+        <span class="ident">pdecOut</span>: <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarDecAdd</span>(
         <span class="ident">pdecLeft</span>: <span class="ident">LPDECIMAL</span>,
@@ -1630,7 +1644,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8Pow</span>(
         <span class="ident">dblLeft</span>: <span class="ident">c_double</span>,
         <span class="ident">dblRight</span>: <span class="ident">c_double</span>,
-        <span class="ident">pdblResult</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_double</span>,
+        <span class="ident">pdblResult</span>: <span class="kw-2">*mut</span> <span class="ident">c_double</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR4CmpR8</span>(
         <span class="ident">fltLeft</span>: <span class="ident">c_float</span>,
@@ -1639,11 +1653,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VarR8Round</span>(
         <span class="ident">dblIn</span>: <span class="ident">c_double</span>,
         <span class="ident">cDecimals</span>: <span class="ident">c_int</span>,
-        <span class="ident">pdblResult</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_double</span>,
+        <span class="ident">pdblResult</span>: <span class="kw-2">*mut</span> <span class="ident">c_double</span>,
     );
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetAltMonthNames</span>(
         <span class="ident">lcid</span>: <span class="ident">LCID</span>,
-        <span class="ident">prgp</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LPOLESTR</span>,
+        <span class="ident">prgp</span>: <span class="kw-2">*mut</span> <span class="ident">LPOLESTR</span>,
     );
 }
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DISPID</span> <span class="op">=</span> <span class="ident">LONG</span>;
@@ -1653,7 +1667,7 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DISPATCH_PROPERTYGET</span>: <span class="ident">WORD</span> <span class="op">=</span> <span class="number">0x2</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DISPATCH_PROPERTYPUT</span>: <span class="ident">WORD</span> <span class="op">=</span> <span class="number">0x4</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DISPATCH_PROPERTYPUTREF</span>: <span class="ident">WORD</span> <span class="op">=</span> <span class="number">0x8</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">REGKIND</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">REGKIND</span> {
     <span class="ident">REGKIND_DEFAULT</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">REGKIND_REGISTER</span>,
     <span class="ident">REGKIND_NONE</span>,
@@ -1662,14 +1676,27 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">LoadTypeLibEx</span>(
         <span class="ident">szFile</span>: <span class="ident">LPCOLESTR</span>,
         <span class="ident">regkind</span>: <span class="ident">REGKIND</span>,
-        <span class="ident">pptlib</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ITypeLib</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HRESULT</span>;
+        <span class="ident">pptlib</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">ITypeLib</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RevokeActiveObject</span>(
         <span class="ident">dwRegister</span>: <span class="ident">DWORD</span>,
-        <span class="ident">pvReserved</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvReserved</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     );
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">OaBuildVersion</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ULONG</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetErrorInfo</span>(
+        <span class="ident">dwReserved</span>: <span class="ident">ULONG</span>,
+        <span class="ident">perrinfo</span>: <span class="kw-2">*mut</span> <span class="ident">IErrorInfo</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">GetErrorInfo</span>(
+        <span class="ident">dwReserved</span>: <span class="ident">ULONG</span>,
+        <span class="ident">pperrinfo</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">IErrorInfo</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">CreateErrorInfo</span>(
+        <span class="ident">pperrinfo</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">ICreateErrorInfo</span>,
+    ) -&gt; <span class="ident">HRESULT</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">OaBuildVersion</span>() -&gt; <span class="ident">ULONG</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">OaEnablePerUserTLibRegistration</span>();
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "winapi";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

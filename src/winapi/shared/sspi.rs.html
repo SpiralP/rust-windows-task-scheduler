@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.8\src\shared\sspi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sspi.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\sspi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sspi.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1072,64 +1072,63 @@
 <span id="1072">1072</span>
 <span id="1073">1073</span>
 <span id="1074">1074</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Licensed under the Apache License, Version 2.0</span>
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
 <span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
 <span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
 <span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
 <span class="comment">// except according to those terms.</span>
 <span class="doccomment">//! Security Support Provider Interface Prototypes and structure definitions</span>
 <span class="kw">use</span> <span class="ident">ctypes</span>::{<span class="ident">c_char</span>, <span class="ident">c_int</span>, <span class="ident">c_uchar</span>, <span class="ident">c_ulong</span>, <span class="ident">c_ushort</span>, <span class="ident">c_void</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">basetsd</span>::<span class="ident">ULONG_PTR</span>;
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">guiddef</span>::<span class="ident">GUID</span>;
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">minwindef</span>::{<span class="ident">PUCHAR</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>};
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">subauth</span>::<span class="ident">PUNICODE_STRING</span>;
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">wincred</span>::{<span class="ident">PCREDUI_INFOA</span>, <span class="ident">PCREDUI_INFOW</span>};
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">winnt</span>::{
+<span class="kw">use</span> <span class="ident">shared::basetsd::ULONG_PTR</span>;
+<span class="kw">use</span> <span class="ident">shared::guiddef::GUID</span>;
+<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">PUCHAR</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>};
+<span class="kw">use</span> <span class="ident">um::subauth::PUNICODE_STRING</span>;
+<span class="kw">use</span> <span class="ident">um::wincred</span>::{<span class="ident">PCREDUI_INFOA</span>, <span class="ident">PCREDUI_INFOW</span>};
+<span class="kw">use</span> <span class="ident">um::winnt</span>::{
     <span class="ident">ANYSIZE_ARRAY</span>, <span class="ident">BOOLEAN</span>, <span class="ident">CHAR</span>, <span class="ident">HANDLE</span>, <span class="ident">LARGE_INTEGER</span>, <span class="ident">LONG</span>, <span class="ident">LPSTR</span>, <span class="ident">LPWSTR</span>, <span class="ident">LUID</span>, <span class="ident">PCSTR</span>, <span class="ident">PCWSTR</span>,
     <span class="ident">PVOID</span>, <span class="ident">WCHAR</span>
 };
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SEC_WCHAR</span> <span class="op">=</span> <span class="ident">WCHAR</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SEC_CHAR</span> <span class="op">=</span> <span class="ident">CHAR</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SECURITY_STATUS</span> <span class="op">=</span> <span class="ident">LONG</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecHandle</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecHandle</span> {
     <span class="ident">dwLower</span>: <span class="ident">ULONG_PTR</span>,
     <span class="ident">dwUpper</span>: <span class="ident">ULONG_PTR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecHandle</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecHandle</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecHandle</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SEC_DELETED_HANDLE</span>: <span class="ident">ULONG_PTR</span> <span class="op">=</span> <span class="number">2</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CredHandle</span> <span class="op">=</span> <span class="ident">SecHandle</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCredHandle</span> <span class="op">=</span> <span class="ident">PSecHandle</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CtxtHandle</span> <span class="op">=</span> <span class="ident">SecHandle</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCtxtHandle</span> <span class="op">=</span> <span class="ident">PSecHandle</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SECURITY_INTEGER</span> <span class="op">=</span> <span class="ident">LARGE_INTEGER</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECURITY_INTEGER</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LARGE_INTEGER</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECURITY_INTEGER</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">LARGE_INTEGER</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TimeStamp</span> <span class="op">=</span> <span class="ident">SECURITY_INTEGER</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTimeStamp</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SECURITY_INTEGER</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SECURITY_STRING</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PTimeStamp</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SECURITY_INTEGER</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SECURITY_STRING</span> {
     <span class="ident">Length</span>: <span class="ident">c_ushort</span>,
     <span class="ident">MaximumLength</span>: <span class="ident">c_ushort</span>,
-    <span class="ident">Buffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ushort</span>,
+    <span class="ident">Buffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_ushort</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECURITY_STRING</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SECURITY_STRING</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgInfoW</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECURITY_STRING</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SECURITY_STRING</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgInfoW</span> {
     <span class="ident">fCapabilities</span>: <span class="ident">c_ulong</span>,
     <span class="ident">wVersion</span>: <span class="ident">c_ushort</span>,
     <span class="ident">wRPCID</span>: <span class="ident">c_ushort</span>,
     <span class="ident">cbMaxToken</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Name</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="ident">Comment</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">Name</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">Comment</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgInfoW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgInfoW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgInfoA</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgInfoW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgInfoW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgInfoA</span> {
     <span class="ident">fCapabilities</span>: <span class="ident">c_ulong</span>,
     <span class="ident">wVersion</span>: <span class="ident">c_ushort</span>,
     <span class="ident">wRPCID</span>: <span class="ident">c_ushort</span>,
     <span class="ident">cbMaxToken</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Name</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="ident">Comment</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="ident">Name</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="ident">Comment</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgInfoA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgInfoA</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgInfoA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgInfoA</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_FLAG_INTEGRITY</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000001</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_FLAG_PRIVACY</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000002</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_FLAG_TOKEN_ONLY</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000004</span>;
@@ -1158,18 +1157,18 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CALLFLAGS_APPCONTAINER</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000001</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CALLFLAGS_APPCONTAINER_AUTHCAPABLE</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000002</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CALLFLAGS_FORCE_SUPPLIED</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000004</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecBuffer</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecBuffer</span> {
     <span class="ident">cbBuffer</span>: <span class="ident">c_ulong</span>,
     <span class="ident">BufferType</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">pvBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">pvBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecBuffer</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecBuffer</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecBufferDesc</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecBuffer</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecBuffer</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecBufferDesc</span> {
     <span class="ident">ulVersion</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cBuffers</span>: <span class="ident">c_ulong</span>,
     <span class="ident">pBuffers</span>: <span class="ident">PSecBuffer</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecBufferDesc</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecBufferDesc</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecBufferDesc</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecBufferDesc</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_VERSION</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_EMPTY</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_DATA</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">1</span>;
@@ -1194,14 +1193,14 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_READONLY</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x80000000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_READONLY_WITH_CHECKSUM</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x10000000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECBUFFER_RESERVED</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x60000000</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_NEGOTIATION_INFO</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_NEGOTIATION_INFO</span> {
     <span class="ident">Size</span>: <span class="ident">c_ulong</span>,
     <span class="ident">NameLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Name</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="ident">Reserved</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">Name</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">Reserved</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_NEGOTIATION_INFO</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_NEGOTIATION_INFO</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_CHANNEL_BINDINGS</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_NEGOTIATION_INFO</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_NEGOTIATION_INFO</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_CHANNEL_BINDINGS</span> {
     <span class="ident">dwInitiatorAddrType</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbInitiatorLength</span>: <span class="ident">c_ulong</span>,
     <span class="ident">dwInitiatorOffset</span>: <span class="ident">c_ulong</span>,
@@ -1211,24 +1210,24 @@
     <span class="ident">cbApplicationDataLength</span>: <span class="ident">c_ulong</span>,
     <span class="ident">dwApplicationDataOffset</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_CHANNEL_BINDINGS</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHANNEL_BINDINGS</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_CHANNEL_BINDINGS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_CHANNEL_BINDINGS</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span> {
     <span class="ident">SecApplicationProtocolNegotiationExt_None</span>,
     <span class="ident">SecApplicationProtocolNegotiationExt_NPN</span>,
     <span class="ident">SecApplicationProtocolNegotiationExt_ALPN</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_APPLICATION_PROTOCOL_LIST</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_APPLICATION_PROTOCOL_LIST</span> {
     <span class="ident">ProtoNegoExt</span>: <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span>,
     <span class="ident">ProtocolListSize</span>: <span class="ident">c_ushort</span>,
     <span class="ident">ProtocolList</span>: [<span class="ident">c_uchar</span>; <span class="number">0</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOL_LIST</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_LIST</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_APPLICATION_PROTOCOLS</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOL_LIST</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_LIST</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_APPLICATION_PROTOCOLS</span> {
     <span class="ident">ProtocolListsSize</span>: <span class="ident">c_ulong</span>,
     <span class="ident">ProtocolLists</span>: [<span class="ident">SEC_APPLICATION_PROTOCOL_LIST</span>; <span class="ident">ANYSIZE_ARRAY</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOLS</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_APPLICATION_PROTOCOLS</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOLS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_APPLICATION_PROTOCOLS</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECURITY_NATIVE_DREP</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000010</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECURITY_NETWORK_DREP</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CRED_INBOUND</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000001</span>;
@@ -1345,29 +1344,29 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CRED_ATTR_SSI_PROVIDER</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">2</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CRED_ATTR_KDC_PROXY_SETTINGS</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">3</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CRED_ATTR_CERT</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_NamesW</span> {
-    <span class="ident">sUserName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_NamesW</span> {
+    <span class="ident">sUserName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_NamesW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_NamesW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_NamesA</span> {
-    <span class="ident">sUserName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_NamesW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_NamesW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_NamesA</span> {
+    <span class="ident">sUserName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_NamesA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_NamesA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_SSIProviderW</span> {
-    <span class="ident">sProviderName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_NamesA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_NamesA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_SSIProviderW</span> {
+    <span class="ident">sProviderName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">ProviderInfoLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">ProviderInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_char</span>,
+    <span class="ident">ProviderInfo</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_SSIProviderW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_SSIProviderW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_SSIProviderA</span> {
-    <span class="ident">sProviderName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_SSIProviderW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_SSIProviderW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_SSIProviderA</span> {
+    <span class="ident">sProviderName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">ProviderInfoLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">ProviderInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_char</span>,
+    <span class="ident">ProviderInfo</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_SSIProviderA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_SSIProviderA</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_SSIProviderA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_SSIProviderA</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KDC_PROXY_SETTINGS_V1</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KDC_PROXY_SETTINGS_FLAGS_FORCEPROXY</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x1</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_KdcProxySettingsW</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_KdcProxySettingsW</span> {
     <span class="ident">Version</span>: <span class="ident">ULONG</span>,
     <span class="ident">Flags</span>: <span class="ident">ULONG</span>,
     <span class="ident">ProxyServerOffset</span>: <span class="ident">USHORT</span>,
@@ -1375,12 +1374,12 @@
     <span class="ident">ClientTlsCredOffset</span>: <span class="ident">USHORT</span>,
     <span class="ident">ClientTlsCredLength</span>: <span class="ident">USHORT</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_KdcProxySettingsW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_KdcProxySettingsW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_Cert</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_KdcProxySettingsW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_KdcProxySettingsW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgCredentials_Cert</span> {
     <span class="ident">EncodedCertSize</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">EncodedCert</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_uchar</span>,
+    <span class="ident">EncodedCert</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_Cert</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgCredentials_Cert</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgCredentials_Cert</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgCredentials_Cert</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_SIZES</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_NAMES</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_LIFESPAN</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">2</span>;
@@ -1416,237 +1415,237 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_DATAGRAM_SIZES</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="ident">SECPKG_ATTR_STREAM_SIZES</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_SUBJECT_SECURITY_ATTRIBUTES</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">128</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_APPLICATION_PROTOCOL</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">35</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_SubjectAttributes</span> {
-    <span class="ident">AttributeInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_SubjectAttributes</span> {
+    <span class="ident">AttributeInfo</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_SubjectAttributes</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_SubjectAttributes</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_SubjectAttributes</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_SubjectAttributes</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_NEGO_INFO_FLAG_NO_KERBEROS</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_ATTR_NEGO_INFO_FLAG_NO_NTLM</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x2</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">SECPKG_CRED_CLASS</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SECPKG_CRED_CLASS</span> {
     <span class="ident">SecPkgCredClass_None</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">SecPkgCredClass_Ephemeral</span> <span class="op">=</span> <span class="number">10</span>,
     <span class="ident">SecPkgCredClass_PersistedGeneric</span> <span class="op">=</span> <span class="number">20</span>,
     <span class="ident">SecPkgCredClass_PersistedSpecific</span> <span class="op">=</span> <span class="number">30</span>,
     <span class="ident">SecPkgCredClass_Explicit</span> <span class="op">=</span> <span class="number">40</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECPKG_CRED_CLASS</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SECPKG_CRED_CLASS</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredInfo</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECPKG_CRED_CLASS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SECPKG_CRED_CLASS</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredInfo</span> {
     <span class="ident">CredClass</span>: <span class="ident">SECPKG_CRED_CLASS</span>,
     <span class="ident">IsPromptingNeeded</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredInfo</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_CredInfo</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoPackageInfo</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredInfo</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_CredInfo</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoPackageInfo</span> {
     <span class="ident">PackageMask</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoPackageInfo</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NegoPackageInfo</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoStatus</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoPackageInfo</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NegoPackageInfo</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoStatus</span> {
     <span class="ident">LastStatus</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoStatus</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NegoStatus</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Sizes</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoStatus</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NegoStatus</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Sizes</span> {
     <span class="ident">cbMaxToken</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbMaxSignature</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbBlockSize</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbSecurityTrailer</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Sizes</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_Sizes</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_StreamSizes</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Sizes</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_Sizes</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_StreamSizes</span> {
     <span class="ident">cbHeader</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbTrailer</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbMaximumMessage</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cBuffers</span>: <span class="ident">c_ulong</span>,
     <span class="ident">cbBlockSize</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_StreamSizes</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_StreamSizes</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_StreamSizes</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_StreamSizes</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SecPkgContext_DatagramSizes</span> <span class="op">=</span> <span class="ident">SecPkgContext_StreamSizes</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_DatagramSizes</span> <span class="op">=</span> <span class="ident">PSecPkgContext_StreamSizes</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NamesW</span> {
-    <span class="ident">sUserName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NamesW</span> {
+    <span class="ident">sUserName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NamesW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NamesW</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">SECPKG_ATTR_LCT_STATUS</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NamesW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NamesW</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SECPKG_ATTR_LCT_STATUS</span> {
     <span class="ident">SecPkgAttrLastClientTokenYes</span>,
     <span class="ident">SecPkgAttrLastClientTokenNo</span>,
     <span class="ident">SecPkgAttrLastClientTokenMaybe</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECPKG_ATTR_LCT_STATUS</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SECPKG_ATTR_LCT_STATUS</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_LastClientTokenStatus</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSECPKG_ATTR_LCT_STATUS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SECPKG_ATTR_LCT_STATUS</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_LastClientTokenStatus</span> {
     <span class="ident">LastClientTokenStatus</span>: <span class="ident">SECPKG_ATTR_LCT_STATUS</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_LastClientTokenStatus</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_LastClientTokenStatus</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NamesA</span> {
-    <span class="ident">sUserName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_LastClientTokenStatus</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_LastClientTokenStatus</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NamesA</span> {
+    <span class="ident">sUserName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NamesA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NamesA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Lifespan</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NamesA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NamesA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Lifespan</span> {
     <span class="ident">tsStart</span>: <span class="ident">TimeStamp</span>,
     <span class="ident">tsExpiry</span>: <span class="ident">TimeStamp</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Lifespan</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_Lifespan</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_DceInfo</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Lifespan</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_Lifespan</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_DceInfo</span> {
     <span class="ident">AuthzSvc</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">pPac</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">pPac</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_DceInfo</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_DceInfo</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_KeyInfoA</span> {
-    <span class="ident">sSignatureAlgorithmName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="ident">sEncryptAlgorithmName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_DceInfo</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_DceInfo</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_KeyInfoA</span> {
+    <span class="ident">sSignatureAlgorithmName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="ident">sEncryptAlgorithmName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">KeySize</span>: <span class="ident">c_ulong</span>,
     <span class="ident">SignatureAlgorithm</span>: <span class="ident">c_ulong</span>,
     <span class="ident">EncryptAlgorithm</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_KeyInfoA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_KeyInfoA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_KeyInfoW</span> {
-    <span class="ident">sSignatureAlgorithmName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="ident">sEncryptAlgorithmName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_KeyInfoA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_KeyInfoA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_KeyInfoW</span> {
+    <span class="ident">sSignatureAlgorithmName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">sEncryptAlgorithmName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">KeySize</span>: <span class="ident">c_ulong</span>,
     <span class="ident">SignatureAlgorithm</span>: <span class="ident">c_ulong</span>,
     <span class="ident">EncryptAlgorithm</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_KeyInfoW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_KeyInfoW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthorityA</span> {
-    <span class="ident">sAuthorityName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_KeyInfoW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_KeyInfoW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthorityA</span> {
+    <span class="ident">sAuthorityName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthorityA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_AuthorityA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthorityW</span> {
-    <span class="ident">sAuthorityName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthorityA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_AuthorityA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthorityW</span> {
+    <span class="ident">sAuthorityName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthorityW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_AuthorityW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ProtoInfoA</span> {
-    <span class="ident">sProtocolName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthorityW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_AuthorityW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ProtoInfoA</span> {
+    <span class="ident">sProtocolName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">majorVersion</span>: <span class="ident">c_ulong</span>,
     <span class="ident">minorVersion</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ProtoInfoA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_ProtoInfoA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ProtoInfoW</span> {
-    <span class="ident">sProtocolName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ProtoInfoA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_ProtoInfoA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ProtoInfoW</span> {
+    <span class="ident">sProtocolName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">majorVersion</span>: <span class="ident">c_ulong</span>,
     <span class="ident">minorVersion</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ProtoInfoW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_ProtoInfoW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PasswordExpiry</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ProtoInfoW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_ProtoInfoW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PasswordExpiry</span> {
     <span class="ident">tsPasswordExpires</span>: <span class="ident">TimeStamp</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PasswordExpiry</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_PasswordExpiry</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_LogoffTime</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PasswordExpiry</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_PasswordExpiry</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_LogoffTime</span> {
     <span class="ident">tsLogoffTime</span>: <span class="ident">TimeStamp</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_LogoffTime</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_LogoffTime</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_SessionKey</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_LogoffTime</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_LogoffTime</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_SessionKey</span> {
     <span class="ident">SessionKeyLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">SessionKey</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_uchar</span>,
+    <span class="ident">SessionKey</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_SessionKey</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_SessionKey</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoKeys</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_SessionKey</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_SessionKey</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegoKeys</span> {
     <span class="ident">KeyType</span>: <span class="ident">c_ulong</span>,
     <span class="ident">KeyLength</span>: <span class="ident">c_ushort</span>,
-    <span class="ident">KeyValue</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_uchar</span>,
+    <span class="ident">KeyValue</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
     <span class="ident">VerifyKeyType</span>: <span class="ident">c_ulong</span>,
     <span class="ident">VerifyKeyLength</span>: <span class="ident">c_ushort</span>,
-    <span class="ident">VerifyKeyValue</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_uchar</span>,
+    <span class="ident">VerifyKeyValue</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoKeys</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NegoKeys</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PackageInfoW</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegoKeys</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NegoKeys</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PackageInfoW</span> {
     <span class="ident">PackageInfo</span>: <span class="ident">PSecPkgInfoW</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PackageInfoW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_PackageInfoW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PackageInfoA</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PackageInfoW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_PackageInfoW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_PackageInfoA</span> {
     <span class="ident">PackageInfo</span>: <span class="ident">PSecPkgInfoA</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PackageInfoA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_PackageInfoA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_UserFlags</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_PackageInfoA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_PackageInfoA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_UserFlags</span> {
     <span class="ident">UserFlags</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_UserFlags</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_UserFlags</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Flags</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_UserFlags</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_UserFlags</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Flags</span> {
     <span class="ident">Flags</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Flags</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_Flags</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegotiationInfoA</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Flags</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_Flags</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegotiationInfoA</span> {
     <span class="ident">PackageInfo</span>: <span class="ident">PSecPkgInfoA</span>,
     <span class="ident">NegotiationState</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegotiationInfoA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NegotiationInfoA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegotiationInfoW</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegotiationInfoA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NegotiationInfoA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NegotiationInfoW</span> {
     <span class="ident">PackageInfo</span>: <span class="ident">PSecPkgInfoW</span>,
     <span class="ident">NegotiationState</span>: <span class="ident">c_ulong</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegotiationInfoW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NegotiationInfoW</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NegotiationInfoW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NegotiationInfoW</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_NEGOTIATION_COMPLETE</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_NEGOTIATION_OPTIMISTIC</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_NEGOTIATION_IN_PROGRESS</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">2</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_NEGOTIATION_DIRECT</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">3</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_NEGOTIATION_TRY_MULTICRED</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NativeNamesW</span> {
-    <span class="ident">sClientName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="ident">sServerName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NativeNamesW</span> {
+    <span class="ident">sClientName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">sServerName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NativeNamesW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NativeNamesW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NativeNamesA</span> {
-    <span class="ident">sClientName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="ident">sServerName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NativeNamesW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NativeNamesW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_NativeNamesA</span> {
+    <span class="ident">sClientName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="ident">sServerName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NativeNamesA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_NativeNamesA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredentialNameW</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_NativeNamesA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_NativeNamesA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredentialNameW</span> {
     <span class="ident">CredentialType</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">sCredentialName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="ident">sCredentialName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredentialNameW</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_CredentialNameW</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredentialNameA</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredentialNameW</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_CredentialNameW</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_CredentialNameA</span> {
     <span class="ident">CredentialType</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">sCredentialName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="ident">sCredentialName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredentialNameA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_CredentialNameA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AccessToken</span> {
-    <span class="ident">AccessToken</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_CredentialNameA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_CredentialNameA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AccessToken</span> {
+    <span class="ident">AccessToken</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AccessToken</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_AccessToken</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_TargetInformation</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AccessToken</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_AccessToken</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_TargetInformation</span> {
     <span class="ident">MarshalledTargetInfoLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">MarshalledTargetInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_uchar</span>,
+    <span class="ident">MarshalledTargetInfo</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_TargetInformation</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_TargetInformation</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthzID</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_TargetInformation</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_TargetInformation</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_AuthzID</span> {
     <span class="ident">AuthzIDLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">AuthzID</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_char</span>,
+    <span class="ident">AuthzID</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthzID</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_AuthzID</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Target</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_AuthzID</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_AuthzID</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Target</span> {
     <span class="ident">TargetLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Target</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_char</span>,
+    <span class="ident">Target</span>: <span class="kw-2">*mut</span> <span class="ident">c_char</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Target</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_Target</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ClientSpecifiedTarget</span> {
-    <span class="ident">sTargetName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Target</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_Target</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ClientSpecifiedTarget</span> {
+    <span class="ident">sTargetName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ClientSpecifiedTarget</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_ClientSpecifiedTarget</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Bindings</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ClientSpecifiedTarget</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_ClientSpecifiedTarget</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_Bindings</span> {
     <span class="ident">BindingsLength</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Bindings</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHANNEL_BINDINGS</span>,
+    <span class="ident">Bindings</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHANNEL_BINDINGS</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Bindings</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_Bindings</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_Bindings</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_Bindings</span>;
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span> {
     <span class="ident">SecApplicationProtocolNegotiationStatus_None</span>,
     <span class="ident">SecApplicationProtocolNegotiationStatus_Success</span>,
     <span class="ident">SecApplicationProtocolNegotiationStatus_SelectedClientOnly</span>,
 }}
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span> <span class="op">=</span>
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span>;
+    <span class="kw-2">*mut</span> <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_PROTOCOL_ID_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xff</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ApplicationProtocol</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SecPkgContext_ApplicationProtocol</span> {
     <span class="ident">ProtoNegoStatus</span>: <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS</span>,
     <span class="ident">ProtoNegoExt</span>: <span class="ident">SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT</span>,
     <span class="ident">ProtocolIdSize</span>: <span class="ident">c_uchar</span>,
     <span class="ident">ProtocolId</span>: [<span class="ident">c_uchar</span>; <span class="ident">MAX_PROTOCOL_ID_SIZE</span>],
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ApplicationProtocol</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecPkgContext_ApplicationProtocol</span>;
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">SEC_GET_KEY_FN</span>(
-    <span class="ident">Arg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">Principal</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecPkgContext_ApplicationProtocol</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecPkgContext_ApplicationProtocol</span>;
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">SEC_GET_KEY_FN</span>(
+    <span class="ident">Arg</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">Principal</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">KeyVer</span>: <span class="ident">c_ulong</span>,
-    <span class="ident">Key</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">Status</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SECURITY_STATUS</span>,
-) <span class="op">-</span><span class="op">&gt;</span> ()}
+    <span class="ident">Key</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">Status</span>: <span class="kw-2">*mut</span> <span class="ident">SECURITY_STATUS</span>,
+) -&gt; ()}
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CONTEXT_EXPORT_RESET_NEW</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000001</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CONTEXT_EXPORT_DELETE_OLD</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000002</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SECPKG_CONTEXT_EXPORT_TO_KERNEL</span>: <span class="ident">c_ulong</span> <span class="op">=</span> <span class="number">0x00000004</span>;
@@ -1655,101 +1654,101 @@
         <span class="ident">pszPrincipal</span>: <span class="ident">LPWSTR</span>,
         <span class="ident">pszPackage</span>: <span class="ident">LPWSTR</span>,
         <span class="ident">fCredentialUse</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pvLogonId</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-        <span class="ident">pAuthData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvLogonId</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pAuthData</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">pGetKeyFn</span>: <span class="ident">SEC_GET_KEY_FN</span>,
-        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">ACQUIRE_CREDENTIALS_HANDLE_FN_W</span>(
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">ACQUIRE_CREDENTIALS_HANDLE_FN_W</span>(
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">c_ulong</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">SEC_GET_KEY_FN</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">PCredHandle</span>,
     <span class="ident">PTimeStamp</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">AcquireCredentialsHandleA</span>(
         <span class="ident">pszPrincipal</span>: <span class="ident">LPSTR</span>,
         <span class="ident">pszPackage</span>: <span class="ident">LPSTR</span>,
         <span class="ident">fCredentialUse</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pvLogonId</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-        <span class="ident">pAuthData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvLogonId</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pAuthData</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">pGetKeyFn</span>: <span class="ident">SEC_GET_KEY_FN</span>,
-        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">ACQUIRE_CREDENTIALS_HANDLE_FN_A</span>(
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">ACQUIRE_CREDENTIALS_HANDLE_FN_A</span>(
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">c_ulong</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">SEC_GET_KEY_FN</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">PCredHandle</span>,
     <span class="ident">PTimeStamp</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeCredentialsHandle</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">FREE_CREDENTIALS_HANDLE_FN</span>(
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">FREE_CREDENTIALS_HANDLE_FN</span>(
     <span class="ident">PCredHandle</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">AddCredentialsW</span>(
         <span class="ident">hCredentials</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">pszPrincipal</span>: <span class="ident">LPWSTR</span>,
         <span class="ident">pszPackage</span>: <span class="ident">LPWSTR</span>,
         <span class="ident">fCredentialUse</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pAuthData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pAuthData</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">pGetKeyFn</span>: <span class="ident">SEC_GET_KEY_FN</span>,
-        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">ADD_CREDENTIALS_FN_W</span>(
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">ADD_CREDENTIALS_FN_W</span>(
     <span class="ident">PCredHandle</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">c_ulong</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">SEC_GET_KEY_FN</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">PTimeStamp</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">AddCredentialsA</span>(
         <span class="ident">hCredentials</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">pszPrincipal</span>: <span class="ident">LPSTR</span>,
         <span class="ident">pszPackage</span>: <span class="ident">LPSTR</span>,
         <span class="ident">fCredentialUse</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pAuthData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pAuthData</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">pGetKeyFn</span>: <span class="ident">SEC_GET_KEY_FN</span>,
-        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pvGetKeyArgument</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">ADD_CREDENTIALS_FN_A</span>(
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">ADD_CREDENTIALS_FN_A</span>(
     <span class="ident">PCredHandle</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">c_ulong</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">SEC_GET_KEY_FN</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">PTimeStamp</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="comment">// pub fn spiCreateAsyncContext();</span>
     <span class="comment">// pub fn SspiFreeAsyncContext();</span>
@@ -1765,53 +1764,53 @@
     <span class="comment">// pub fn SspiFreeCredentialsHandleAsync();</span>
     <span class="comment">// pub fn SspiDeleteSecurityContextAsync();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ChangeAccountPasswordW</span>(
-        <span class="ident">pszPackageName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-        <span class="ident">pszDomainName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-        <span class="ident">pszAccountName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-        <span class="ident">pszOldPassword</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-        <span class="ident">pszNewPassword</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszPackageName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszDomainName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszAccountName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszOldPassword</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszNewPassword</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
         <span class="ident">bImpersonating</span>: <span class="ident">BOOLEAN</span>,
         <span class="ident">dwReserved</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pOutput</span>: <span class="ident">PSecBufferDesc</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">CHANGE_PASSWORD_FN_W</span>(
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">CHANGE_PASSWORD_FN_W</span>(
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
     <span class="ident">BOOLEAN</span>,
     <span class="ident">c_ulong</span>,
     <span class="ident">PSecBufferDesc</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ChangeAccountPasswordA</span>(
-        <span class="ident">pszPackageName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-        <span class="ident">pszDomainName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-        <span class="ident">pszAccountName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-        <span class="ident">pszOldPassword</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-        <span class="ident">pszNewPassword</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszPackageName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszDomainName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszAccountName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszOldPassword</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszNewPassword</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
         <span class="ident">bImpersonating</span>: <span class="ident">BOOLEAN</span>,
         <span class="ident">dwReserved</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pOutput</span>: <span class="ident">PSecBufferDesc</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">FN</span><span class="macro">!</span>{<span class="ident">stdcall</span> <span class="ident">CHANGE_PASSWORD_FN_A</span>(
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+<span class="macro">FN!</span>{<span class="ident">stdcall</span> <span class="ident">CHANGE_PASSWORD_FN_A</span>(
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
+    <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
     <span class="ident">BOOLEAN</span>,
     <span class="ident">c_ulong</span>,
     <span class="ident">PSecBufferDesc</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>}
+) -&gt; <span class="ident">SECURITY_STATUS</span>}
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">InitializeSecurityContextW</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-        <span class="ident">pszTargetName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WCHAR</span>,
+        <span class="ident">pszTargetName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_WCHAR</span>,
         <span class="ident">fContextReq</span>: <span class="ident">c_ulong</span>,
         <span class="ident">Reserved1</span>: <span class="ident">c_ulong</span>,
         <span class="ident">TargetDataRep</span>: <span class="ident">c_ulong</span>,
@@ -1819,16 +1818,16 @@
         <span class="ident">Reserved2</span>: <span class="ident">c_ulong</span>,
         <span class="ident">phNewContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pOutput</span>: <span class="ident">PSecBufferDesc</span>,
-        <span class="ident">pfContextAttr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
+        <span class="ident">pfContextAttr</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
 <span class="comment">// INITIALIZE_SECURITY_CONTEXT_FN_W</span>
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">InitializeSecurityContextA</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-        <span class="ident">pszTargetName</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_CHAR</span>,
+        <span class="ident">pszTargetName</span>: <span class="kw-2">*mut</span> <span class="ident">SEC_CHAR</span>,
         <span class="ident">fContextReq</span>: <span class="ident">c_ulong</span>,
         <span class="ident">Reserved1</span>: <span class="ident">c_ulong</span>,
         <span class="ident">TargetDataRep</span>: <span class="ident">c_ulong</span>,
@@ -1836,9 +1835,9 @@
         <span class="ident">Reserved2</span>: <span class="ident">c_ulong</span>,
         <span class="ident">phNewContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pOutput</span>: <span class="ident">PSecBufferDesc</span>,
-        <span class="ident">pfContextAttr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
+        <span class="ident">pfContextAttr</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">AcceptSecurityContext</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
@@ -1847,150 +1846,150 @@
         <span class="ident">TargetDataRep</span>: <span class="ident">c_ulong</span>,
         <span class="ident">phNewContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pOutput</span>: <span class="ident">PSecBufferDesc</span>,
-        <span class="ident">pfContextAttr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
+        <span class="ident">pfContextAttr</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
         <span class="ident">ptsExpiry</span>: <span class="ident">PTimeStamp</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">CompleteAuthToken</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pToken</span>: <span class="ident">PSecBufferDesc</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ImpersonateSecurityContext</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">RevertSecurityContext</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QuerySecurityContextToken</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-        <span class="ident">Token</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">Token</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">DeleteSecurityContext</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ApplyControlToken</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pInput</span>: <span class="ident">PSecBufferDesc</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QueryContextAttributesW</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="comment">// pub fn QueryContextAttributesExW();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QueryContextAttributesA</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="comment">// pub fn QueryContextAttributesExA();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetContextAttributesW</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">cbBuffer</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetContextAttributesA</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">cbBuffer</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QueryCredentialsAttributesW</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="comment">// pub fn QueryCredentialsAttributesExW();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QueryCredentialsAttributesA</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="comment">// pub fn QueryCredentialsAttributesExA();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetCredentialsAttributesW</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">cbBuffer</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SetCredentialsAttributesA</span>(
         <span class="ident">phCredential</span>: <span class="ident">PCredHandle</span>,
         <span class="ident">ulAttribute</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pBuffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">pBuffer</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">cbBuffer</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FreeContextBuffer</span>(
         <span class="ident">pvContextBuffer</span>: <span class="ident">PVOID</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">MakeSignature</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">fQOP</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pMessage</span>: <span class="ident">PSecBufferDesc</span>,
         <span class="ident">MessageSeqNo</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">VerifySignature</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pMessage</span>: <span class="ident">PSecBufferDesc</span>,
         <span class="ident">MessageSeqNo</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pfQOP</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pfQOP</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">EncryptMessage</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">fQOP</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pMessage</span>: <span class="ident">PSecBufferDesc</span>,
         <span class="ident">MessageSeqNo</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">DecryptMessage</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">pMessage</span>: <span class="ident">PSecBufferDesc</span>,
         <span class="ident">MessageSeqNo</span>: <span class="ident">c_ulong</span>,
-        <span class="ident">pfQOP</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pfQOP</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">EnumerateSecurityPackagesW</span>(
-        <span class="ident">pcPackages</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
-        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSecPkgInfoW</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pcPackages</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
+        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*mut</span> <span class="ident">PSecPkgInfoW</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">EnumerateSecurityPackagesA</span>(
-        <span class="ident">pcPackages</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_ulong</span>,
-        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSecPkgInfoA</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pcPackages</span>: <span class="kw-2">*mut</span> <span class="ident">c_ulong</span>,
+        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*mut</span> <span class="ident">PSecPkgInfoA</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QuerySecurityPackageInfoW</span>(
         <span class="ident">pszPackageName</span>: <span class="ident">LPWSTR</span>,
-        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSecPkgInfoW</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*mut</span> <span class="ident">PSecPkgInfoW</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">QuerySecurityPackageInfoA</span>(
         <span class="ident">pszPackageName</span>: <span class="ident">LPSTR</span>,
-        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSecPkgInfoA</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">ppPackageInfo</span>: <span class="kw-2">*mut</span> <span class="ident">PSecPkgInfoA</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">SecDelegationType</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">SecDelegationType</span> {
     <span class="ident">SecFull</span>,
     <span class="ident">SecService</span>,
     <span class="ident">SecTree</span>,
     <span class="ident">SecDirectory</span>,
     <span class="ident">SecObject</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecDelegationType</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SecDelegationType</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSecDelegationType</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SecDelegationType</span>;
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="comment">// pub fn DelegateSecurityContext();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ExportSecurityContext</span>(
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
         <span class="ident">fFlags</span>: <span class="ident">ULONG</span>,
         <span class="ident">pPackedContext</span>: <span class="ident">PSecBuffer</span>,
-        <span class="ident">pToken</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">pToken</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ImportSecurityContextW</span>(
         <span class="ident">pszPackage</span>: <span class="ident">LPWSTR</span>,
         <span class="ident">pPackedContext</span>: <span class="ident">PSecBuffer</span>,
-        <span class="ident">Token</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">Token</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ImportSecurityContextA</span>(
         <span class="ident">pszPackage</span>: <span class="ident">LPSTR</span>,
         <span class="ident">pPackedContext</span>: <span class="ident">PSecBuffer</span>,
-        <span class="ident">Token</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">Token</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
         <span class="ident">phContext</span>: <span class="ident">PCtxtHandle</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 <span class="comment">// pub fn SecMakeSPN();</span>
 <span class="comment">// pub fn SecMakeSPNEx();</span>
 <span class="comment">// pub fn SecMakeSPNEx2();</span>
@@ -2021,80 +2020,80 @@
         <span class="ident">dwAuthError</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pszPackage</span>: <span class="ident">PCWSTR</span>,
         <span class="ident">pInputAuthIdentity</span>: <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
-        <span class="ident">ppAuthIdentity</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
-        <span class="ident">pfSave</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_int</span>,
+        <span class="ident">ppAuthIdentity</span>: <span class="kw-2">*mut</span> <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
+        <span class="ident">pfSave</span>: <span class="kw-2">*mut</span> <span class="ident">c_int</span>,
         <span class="ident">dwFlags</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_ulong</span>;
+    ) -&gt; <span class="ident">c_ulong</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SspiPromptForCredentialsA</span>(
         <span class="ident">pszTargetName</span>: <span class="ident">PCSTR</span>,
         <span class="ident">pUiInfo</span>: <span class="ident">PCREDUI_INFOA</span>,
         <span class="ident">dwAuthError</span>: <span class="ident">c_ulong</span>,
         <span class="ident">pszPackage</span>: <span class="ident">PCSTR</span>,
         <span class="ident">pInputAuthIdentity</span>: <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
-        <span class="ident">ppAuthIdentity</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
-        <span class="ident">pfSave</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_int</span>,
+        <span class="ident">ppAuthIdentity</span>: <span class="kw-2">*mut</span> <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
+        <span class="ident">pfSave</span>: <span class="kw-2">*mut</span> <span class="ident">c_int</span>,
         <span class="ident">dwFlags</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_ulong</span>;
+    ) -&gt; <span class="ident">c_ulong</span>;
 }
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span> {
     <span class="ident">ByteArrayOffset</span>: <span class="ident">c_ulong</span>,
     <span class="ident">ByteArrayLength</span>: <span class="ident">c_ushort</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_BYTE_VECTOR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_DATA</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_BYTE_VECTOR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_DATA</span> {
     <span class="ident">CredType</span>: <span class="ident">GUID</span>,
     <span class="ident">CredData</span>: <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_DATA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_DATA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_PACKED_CREDENTIALS</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_DATA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_DATA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_PACKED_CREDENTIALS</span> {
     <span class="ident">cbHeaderLength</span>: <span class="ident">c_ushort</span>,
     <span class="ident">cbStructureLength</span>: <span class="ident">c_ushort</span>,
     <span class="ident">AuthData</span>: <span class="ident">SEC_WINNT_AUTH_DATA</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_PACKED_CREDENTIALS</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_PACKED_CREDENTIALS</span>;
-<span class="macro">DEFINE_GUID</span><span class="macro">!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_PASSWORD</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_PACKED_CREDENTIALS</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_PACKED_CREDENTIALS</span>;
+<span class="macro">DEFINE_GUID!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_PASSWORD</span>,
     <span class="number">0x28bfc32f</span>, <span class="number">0x10f6</span>, <span class="number">0x4738</span>, <span class="number">0x98</span>, <span class="number">0xd1</span>, <span class="number">0x1a</span>, <span class="number">0xc0</span>, <span class="number">0x61</span>, <span class="number">0xdf</span>, <span class="number">0x71</span>, <span class="number">0x6a</span>}
-<span class="macro">DEFINE_GUID</span><span class="macro">!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_CERT</span>,
+<span class="macro">DEFINE_GUID!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_CERT</span>,
     <span class="number">0x235f69ad</span>, <span class="number">0x73fb</span>, <span class="number">0x4dbc</span>, <span class="number">0x82</span>, <span class="number">0x3</span>, <span class="number">0x6</span>, <span class="number">0x29</span>, <span class="number">0xe7</span>, <span class="number">0x39</span>, <span class="number">0x33</span>, <span class="number">0x9b</span>}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_DATA_PASSWORD</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_DATA_PASSWORD</span> {
     <span class="ident">UnicodePassword</span>: <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_DATA_PASSWORD</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_DATA_PASSWORD</span>;
-<span class="macro">DEFINE_GUID</span><span class="macro">!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_CSP_DATA</span>,
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_DATA_PASSWORD</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_DATA_PASSWORD</span>;
+<span class="macro">DEFINE_GUID!</span>{<span class="ident">SEC_WINNT_AUTH_DATA_TYPE_CSP_DATA</span>,
     <span class="number">0x68fd9879</span>, <span class="number">0x79c</span>, <span class="number">0x4dfe</span>, <span class="number">0x82</span>, <span class="number">0x81</span>, <span class="number">0x57</span>, <span class="number">0x8a</span>, <span class="number">0xad</span>, <span class="number">0xc1</span>, <span class="number">0xc1</span>, <span class="number">0x0</span>}
 <span class="comment">// GUID SEC_WINNT_AUTH_DATA_TYPE_SMARTCARD_CONTEXTS</span>
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_CERTIFICATE_DATA</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_CERTIFICATE_DATA</span> {
     <span class="ident">cbHeaderLength</span>: <span class="ident">c_ushort</span>,
     <span class="ident">cbStructureLength</span>: <span class="ident">c_ushort</span>,
     <span class="ident">Certificate</span>: <span class="ident">SEC_WINNT_AUTH_BYTE_VECTOR</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_CERTIFICATE_DATA</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_CERTIFICATE_DATA</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT_VECTOR</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_CERTIFICATE_DATA</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_CERTIFICATE_DATA</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT_VECTOR</span> {
     <span class="ident">CredUIContextArrayOffset</span>: <span class="ident">ULONG</span>,
     <span class="ident">CredUIContextCount</span>: <span class="ident">USHORT</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT_VECTOR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT_VECTOR</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_SHORT_VECTOR</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT_VECTOR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT_VECTOR</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_AUTH_SHORT_VECTOR</span> {
     <span class="ident">ShortArrayOffset</span>: <span class="ident">ULONG</span>,
     <span class="ident">ShortArrayCount</span>: <span class="ident">USHORT</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_SHORT_VECTOR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_AUTH_SHORT_VECTOR</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_AUTH_SHORT_VECTOR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_AUTH_SHORT_VECTOR</span>;
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SspiGetCredUIContext</span>(
         <span class="ident">ContextHandle</span>: <span class="ident">HANDLE</span>,
-        <span class="ident">CredType</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">GUID</span>,
-        <span class="ident">LogonId</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LUID</span>,
-        <span class="ident">CredUIContexts</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT_VECTOR</span>,
-        <span class="ident">TokenHandle</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HANDLE</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">CredType</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
+        <span class="ident">LogonId</span>: <span class="kw-2">*mut</span> <span class="ident">LUID</span>,
+        <span class="ident">CredUIContexts</span>: <span class="kw-2">*mut</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT_VECTOR</span>,
+        <span class="ident">TokenHandle</span>: <span class="kw-2">*mut</span> <span class="ident">HANDLE</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SspiUpdateCredentials</span>(
         <span class="ident">ContextHandle</span>: <span class="ident">HANDLE</span>,
-        <span class="ident">CredType</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">GUID</span>,
+        <span class="ident">CredType</span>: <span class="kw-2">*mut</span> <span class="ident">GUID</span>,
         <span class="ident">FlatCredUIContextLength</span>: <span class="ident">ULONG</span>,
         <span class="ident">FlatCredUIContext</span>: <span class="ident">PUCHAR</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
 }
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">CREDUIWIN_MARSHALED_CONTEXT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">CREDUIWIN_MARSHALED_CONTEXT</span> {
     <span class="ident">StructureType</span>: <span class="ident">GUID</span>,
     <span class="ident">cbHeaderLength</span>: <span class="ident">USHORT</span>,
     <span class="ident">LogonId</span>: <span class="ident">LUID</span>,
@@ -2102,8 +2101,8 @@
     <span class="ident">MarshaledDataOffset</span>: <span class="ident">ULONG</span>,
     <span class="ident">MarshaledDataLength</span>: <span class="ident">USHORT</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCREDUIWIN_MARSHALED_CONTEXT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">CREDUIWIN_MARSHALED_CONTEXT</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PCREDUIWIN_MARSHALED_CONTEXT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">CREDUIWIN_MARSHALED_CONTEXT</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT</span> {
     <span class="ident">cbHeaderLength</span>: <span class="ident">USHORT</span>,
     <span class="ident">CredUIContextHandle</span>: <span class="ident">HANDLE</span>,
     <span class="ident">UIInfo</span>: <span class="ident">PCREDUI_INFOW</span>,
@@ -2111,15 +2110,15 @@
     <span class="ident">pInputAuthIdentity</span>: <span class="ident">PSEC_WINNT_AUTH_IDENTITY_OPAQUE</span>,
     <span class="ident">TargetName</span>: <span class="ident">PUNICODE_STRING</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">SEC_WINNT_CREDUI_CONTEXT</span>;
 <span class="comment">// GUID CREDUIWIN_STRUCTURE_TYPE_SSPIPFC</span>
 <span class="comment">// GUID SSPIPFC_STRUCTURE_TYPE_CREDUI_CONTEXT</span>
 <span class="kw">extern</span> <span class="string">&quot;system&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SspiUnmarshalCredUIContext</span>(
         <span class="ident">MarshaledCredUIContext</span>: <span class="ident">PUCHAR</span>,
         <span class="ident">MarshaledCredUIContextLength</span>: <span class="ident">ULONG</span>,
-        <span class="ident">CredUIContext</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_STATUS</span>;
+        <span class="ident">CredUIContext</span>: <span class="kw-2">*mut</span> <span class="ident">PSEC_WINNT_CREDUI_CONTEXT</span>,
+    ) -&gt; <span class="ident">SECURITY_STATUS</span>;
     <span class="comment">// pub fn SspiPrepareForCredRead();</span>
     <span class="comment">// pub fn SspiPrepareForCredWrite();</span>
     <span class="comment">// pub fn SspiEncryptAuthIdentity();</span>
@@ -2139,7 +2138,7 @@
     <span class="comment">// pub fn SspiUnmarshalAuthIdentity();</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">SspiIsPromptingNeeded</span>(
         <span class="ident">ErrorOrNtStatus</span>: <span class="ident">c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BOOLEAN</span>;
+    ) -&gt; <span class="ident">BOOLEAN</span>;
     <span class="comment">// pub fn SspiGetTargetHostName();</span>
     <span class="comment">// pub fn SspiExcludePackage();</span>
     <span class="comment">// pub fn AddSecurityPackageA();</span>
@@ -2147,5 +2146,7 @@
     <span class="comment">// pub fn DeleteSecurityPackageA();</span>
     <span class="comment">// pub fn DeleteSecurityPackageW();</span>
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "winapi";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

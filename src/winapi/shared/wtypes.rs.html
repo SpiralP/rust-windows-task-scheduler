@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.8\src\shared\wtypes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>wtypes.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\wtypes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>wtypes.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../winapi/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -342,149 +342,148 @@
 <span id="342">342</span>
 <span id="343">343</span>
 <span id="344">344</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Licensed under the Apache License, Version 2.0</span>
+</pre><pre class="rust"><code><span class="comment">// Licensed under the Apache License, Version 2.0</span>
 <span class="comment">// &lt;LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license</span>
 <span class="comment">// &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your option.</span>
 <span class="comment">// All files in the project carrying such notice may not be copied, modified, or distributed</span>
 <span class="comment">// except according to those terms.</span>
 <span class="kw">use</span> <span class="ident">ctypes</span>::{<span class="ident">__int64</span>, <span class="ident">c_double</span>, <span class="ident">c_short</span>, <span class="ident">c_ushort</span>, <span class="ident">c_void</span>, <span class="ident">wchar_t</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">guiddef</span>::{<span class="ident">CLSID</span>, <span class="ident">GUID</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">minwindef</span>::{<span class="ident">BYTE</span>, <span class="ident">DWORD</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>, <span class="ident">WORD</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">ntdef</span>::{<span class="ident">LCID</span>, <span class="ident">LONG</span>, <span class="ident">LONGLONG</span>, <span class="ident">ULONGLONG</span>};
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">rpcndr</span>::<span class="ident">byte</span>;
-<span class="kw">use</span> <span class="ident">shared</span>::<span class="ident">wtypesbase</span>::{
+<span class="kw">use</span> <span class="ident">shared::guiddef</span>::{<span class="ident">CLSID</span>, <span class="ident">GUID</span>};
+<span class="kw">use</span> <span class="ident">shared::minwindef</span>::{<span class="ident">BYTE</span>, <span class="ident">DWORD</span>, <span class="ident">ULONG</span>, <span class="ident">USHORT</span>, <span class="ident">WORD</span>};
+<span class="kw">use</span> <span class="ident">shared::ntdef</span>::{<span class="ident">LCID</span>, <span class="ident">LONG</span>, <span class="ident">LONGLONG</span>, <span class="ident">ULONGLONG</span>};
+<span class="kw">use</span> <span class="ident">shared::rpcndr::byte</span>;
+<span class="kw">use</span> <span class="ident">shared::wtypesbase</span>::{
     <span class="ident">BYTE_BLOB</span>, <span class="ident">DWORD_BLOB</span>, <span class="ident">FLAGGED_BYTE_BLOB</span>, <span class="ident">FLAGGED_WORD_BLOB</span>, <span class="ident">LPOLESTR</span>, <span class="ident">OLECHAR</span>
 };
-<span class="kw">use</span> <span class="ident">um</span>::<span class="ident">wingdi</span>::<span class="ident">LOGPALETTE</span>;
+<span class="kw">use</span> <span class="ident">um::wingdi::LOGPALETTE</span>;
 <span class="comment">// extern RPC_IF_HANDLE __MIDL_itf_wtypes_0000_0000_v0_0_c_ifspec;</span>
 <span class="comment">// extern RPC_IF_HANDLE __MIDL_itf_wtypes_0000_0000_v0_0_s_ifspec;</span>
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHGLOBAL</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHGLOBAL</span> {
     <span class="ident">fNullHGlobal</span>: <span class="ident">LONG</span>,
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHMETAFILEPICT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHMETAFILEPICT</span> {
     <span class="ident">mm</span>: <span class="ident">LONG</span>,
     <span class="ident">xExt</span>: <span class="ident">LONG</span>,
     <span class="ident">yExt</span>: <span class="ident">LONG</span>,
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHENHMETAFILE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHENHMETAFILE</span> {
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHBITMAP</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHBITMAP</span> {
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHPALETTE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHPALETTE</span> {
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemHBRUSH</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemHBRUSH</span> {
     <span class="ident">cbData</span>: <span class="ident">ULONG</span>,
     <span class="ident">data</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROTFLAGS_REGISTRATIONKEEPSALIVE</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROTFLAGS_ALLOWANYCLIENT</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0x2</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROT_COMPARE_MAX</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">2048</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">DVASPECT</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">DVASPECT</span> {
     <span class="ident">DVASPECT_CONTENT</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">DVASPECT_THUMBNAIL</span> <span class="op">=</span> <span class="number">2</span>,
     <span class="ident">DVASPECT_ICON</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="ident">DVASPECT_DOCPRINT</span> <span class="op">=</span> <span class="number">8</span>,
 }}
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">STGC</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">STGC</span> {
     <span class="ident">STGC_DEFAULT</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">STGC_OVERWRITE</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">STGC_ONLYIFCURRENT</span> <span class="op">=</span> <span class="number">2</span>,
     <span class="ident">STGC_DANGEROUSLYCOMMITMERELYTODISKCACHE</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="ident">STGC_CONSOLIDATE</span> <span class="op">=</span> <span class="number">8</span>,
 }}
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">STGMOVE</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">STGMOVE</span> {
     <span class="ident">STGMOVE_MOVE</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">STGMOVE_COPY</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">STGMOVE_SHALLOWCOPY</span> <span class="op">=</span> <span class="number">2</span>,
 }}
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">STATFLAG</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">STATFLAG</span> {
     <span class="ident">STATFLAG_DEFAULT</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">STATFLAG_NONAME</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">STATFLAG_NOOPEN</span> <span class="op">=</span> <span class="number">2</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HCONTEXT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HCONTEXT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WDT_INPROC_CALL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x48746457</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WDT_REMOTE_CALL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x52746457</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WDT_INPROC64_CALL</span>: <span class="ident">ULONG</span> <span class="op">=</span> <span class="number">0x50746457</span>;
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userCLIPFORMAT_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userCLIPFORMAT_u</span> {
     [<span class="ident">usize</span>; <span class="number">1</span>],
     <span class="ident">dwValue</span> <span class="ident">dwValue_mut</span>: <span class="ident">DWORD</span>,
-    <span class="ident">pwszName</span> <span class="ident">pwszName_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">wchar_t</span>,
+    <span class="ident">pwszName</span> <span class="ident">pwszName_mut</span>: <span class="kw-2">*mut</span> <span class="ident">wchar_t</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userCLIPFORMAT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userCLIPFORMAT</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userCLIPFORMAT_u</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireCLIPFORMAT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userCLIPFORMAT</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireCLIPFORMAT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userCLIPFORMAT</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CLIPFORMAT</span> <span class="op">=</span> <span class="ident">WORD</span>;
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">GDI_NONREMOTE_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">GDI_NONREMOTE_u</span> {
     [<span class="ident">usize</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DWORD_BLOB</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">DWORD_BLOB</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">GDI_NONREMOTE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">GDI_NONREMOTE</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">GDI_NONREMOTE_u</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHGLOBAL_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHGLOBAL_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLAGGED_BYTE_BLOB</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">FLAGGED_BYTE_BLOB</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHGLOBAL</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHGLOBAL</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHGLOBAL_u</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHGLOBAL</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHGLOBAL</span>;
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHMETAFILE_u</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHGLOBAL</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHGLOBAL</span>;
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHMETAFILE_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE_BLOB</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE_BLOB</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHMETAFILE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHMETAFILE</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHMETAFILE_u</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">remoteMETAFILEPICT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">remoteMETAFILEPICT</span> {
     <span class="ident">mm</span>: <span class="ident">LONG</span>,
     <span class="ident">xExt</span>: <span class="ident">LONG</span>,
     <span class="ident">yExt</span>: <span class="ident">LONG</span>,
-    <span class="ident">hMF</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHMETAFILE</span>,
+    <span class="ident">hMF</span>: <span class="kw-2">*mut</span> <span class="ident">userHMETAFILE</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHMETAFILEPICT_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHMETAFILEPICT_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">remoteMETAFILEPICT</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">remoteMETAFILEPICT</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHMETAFILEPICT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHMETAFILEPICT</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHMETAFILEPICT_u</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHENHMETAFILE_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHENHMETAFILE_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE_BLOB</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE_BLOB</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHENHMETAFILE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHENHMETAFILE</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHENHMETAFILE_u</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userBITMAP</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userBITMAP</span> {
     <span class="ident">bmType</span>: <span class="ident">LONG</span>,
     <span class="ident">bmWidth</span>: <span class="ident">LONG</span>,
     <span class="ident">bmHeight</span>: <span class="ident">LONG</span>,
@@ -494,58 +493,58 @@
     <span class="ident">cbSize</span>: <span class="ident">ULONG</span>,
     <span class="ident">pBuffer</span>: [<span class="ident">byte</span>; <span class="number">1</span>],
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHBITMAP_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHBITMAP_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userBITMAP</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">userBITMAP</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHBITMAP</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHBITMAP</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHBITMAP_u</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">userHPALETTE_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">userHPALETTE_u</span> {
     [<span class="ident">u64</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
-    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">LOGPALETTE</span>,
+    <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="kw-2">*mut</span> <span class="ident">LOGPALETTE</span>,
     <span class="ident">hInproc64</span> <span class="ident">hInproc64_mut</span>: <span class="ident">__int64</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">userHPALETTE</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">userHPALETTE</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">userHPALETTE_u</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">RemotableHandle_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">RemotableHandle_u</span> {
     [<span class="ident">u32</span>; <span class="number">1</span>],
     <span class="ident">hInproc</span> <span class="ident">hInproc_mut</span>: <span class="ident">LONG</span>,
     <span class="ident">hRemote</span> <span class="ident">hRemote_mut</span>: <span class="ident">LONG</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">RemotableHandle</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">RemotableHandle</span> {
     <span class="ident">fContext</span>: <span class="ident">LONG</span>,
     <span class="ident">u</span>: <span class="ident">RemotableHandle_u</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHWND</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMENU</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHACCEL</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHBRUSH</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHFONT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHDC</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHICON</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHRGN</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMONITOR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RemotableHandle</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHBITMAP</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHBITMAP</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHPALETTE</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHPALETTE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHENHMETAFILE</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHENHMETAFILE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMETAFILE</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHMETAFILE</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMETAFILEPICT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">userHMETAFILEPICT</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HMETAFILEPICT</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHWND</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMENU</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHACCEL</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHBRUSH</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHFONT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHDC</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHICON</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHRGN</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMONITOR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">RemotableHandle</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHBITMAP</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHBITMAP</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHPALETTE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHPALETTE</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHENHMETAFILE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHENHMETAFILE</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMETAFILE</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHMETAFILE</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireHMETAFILEPICT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">userHMETAFILEPICT</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HMETAFILEPICT</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">c_void</span>;
 <span class="comment">// extern RPC_IF_HANDLE IWinTypes_v0_1_c_ifspec;</span>
 <span class="comment">// extern RPC_IF_HANDLE IWinTypes_v0_1_s_ifspec;</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DATE</span> <span class="op">=</span> <span class="ident">c_double</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">CY</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">CY</span> {
     <span class="ident">int64</span>: <span class="ident">LONGLONG</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPCY</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">CY</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">DECIMAL</span> {
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPCY</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">CY</span>;
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">DECIMAL</span> {
     <span class="ident">wReserved</span>: <span class="ident">USHORT</span>,
     <span class="ident">scale</span>: <span class="ident">BYTE</span>,
     <span class="ident">sign</span>: <span class="ident">BYTE</span>,
@@ -554,35 +553,35 @@
 }}
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DECIMAL_NEG</span>: <span class="ident">BYTE</span> <span class="op">=</span> <span class="number">0x80</span>;
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">DECIMAL_SETZERO</span>(<span class="ident">dec</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">DECIMAL_SETZERO</span>(<span class="ident">dec</span>: <span class="kw-2">&amp;mut</span> <span class="ident">DECIMAL</span>) {
     <span class="ident">dec</span>.<span class="ident">Lo64</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="ident">dec</span>.<span class="ident">Hi32</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="ident">dec</span>.<span class="ident">scale</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="ident">dec</span>.<span class="ident">sign</span> <span class="op">=</span> <span class="number">0</span>;
 }
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPDECIMAL</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">DECIMAL</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireBSTR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FLAGGED_WORD_BLOB</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BSTR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">OLECHAR</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPBSTR</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTR</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPDECIMAL</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">DECIMAL</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">wireBSTR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">FLAGGED_WORD_BLOB</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BSTR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">OLECHAR</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPBSTR</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">BSTR</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">VARIANT_BOOL</span> <span class="op">=</span> <span class="ident">c_short</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">BSTRBLOB</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">BSTRBLOB</span> {
     <span class="ident">cbSize</span>: <span class="ident">ULONG</span>,
-    <span class="ident">pData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+    <span class="ident">pData</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
 }}
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPBSTRBLOB</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BSTRBLOB</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LPBSTRBLOB</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">BSTRBLOB</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VARIANT_TRUE</span>: <span class="ident">VARIANT_BOOL</span> <span class="op">=</span> <span class="op">-</span><span class="number">1</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VARIANT_FALSE</span>: <span class="ident">VARIANT_BOOL</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">CLIPDATA</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">CLIPDATA</span> {
     <span class="ident">cbSize</span>: <span class="ident">ULONG</span>,
     <span class="ident">ulClipFmt</span>: <span class="ident">LONG</span>,
-    <span class="ident">pClipData</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">BYTE</span>,
+    <span class="ident">pClipData</span>: <span class="kw-2">*mut</span> <span class="ident">BYTE</span>,
 }}
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">CBPCLIPDATA</span>(<span class="ident">clipdata</span>: <span class="ident">CLIPDATA</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ULONG</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">CBPCLIPDATA</span>(<span class="ident">clipdata</span>: <span class="ident">CLIPDATA</span>) -&gt; <span class="ident">ULONG</span> {
     <span class="ident">clipdata</span>.<span class="ident">cbSize</span> <span class="op">-</span> <span class="number">4</span>
 }
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">VARTYPE</span> <span class="op">=</span> <span class="ident">c_ushort</span>;
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">VARENUM</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">VARENUM</span> {
     <span class="ident">VT_EMPTY</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">VT_NULL</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">VT_I2</span> <span class="op">=</span> <span class="number">2</span>,
@@ -637,24 +636,24 @@
     <span class="ident">VT_TYPEMASK</span> <span class="op">=</span> <span class="number">0xfff</span>,
 }}
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PROPID</span> <span class="op">=</span> <span class="ident">ULONG</span>;
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">PROPERTYKEY</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">PROPERTYKEY</span> {
     <span class="ident">fmtid</span>: <span class="ident">GUID</span>,
     <span class="ident">pid</span>: <span class="ident">DWORD</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">CSPLATFORM</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">CSPLATFORM</span> {
     <span class="ident">dwPlatformId</span>: <span class="ident">DWORD</span>,
     <span class="ident">dwVersionHi</span>: <span class="ident">DWORD</span>,
     <span class="ident">dwVersionLo</span>: <span class="ident">DWORD</span>,
     <span class="ident">dwProcessorArch</span>: <span class="ident">DWORD</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">QUERYCONTEXT</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">QUERYCONTEXT</span> {
     <span class="ident">dwContext</span>: <span class="ident">DWORD</span>,
     <span class="ident">Platform</span>: <span class="ident">CSPLATFORM</span>,
     <span class="ident">Locale</span>: <span class="ident">LCID</span>,
     <span class="ident">dwVersionHi</span>: <span class="ident">DWORD</span>,
     <span class="ident">dwVersionLo</span>: <span class="ident">DWORD</span>,
 }}
-<span class="macro">ENUM</span><span class="macro">!</span>{<span class="kw">enum</span> <span class="ident">TYSPEC</span> {
+<span class="macro">ENUM!</span>{<span class="kw">enum</span> <span class="ident">TYSPEC</span> {
     <span class="ident">TYSPEC_CLSID</span>,
     <span class="ident">TYSPEC_FILEEXT</span>,
     <span class="ident">TYSPEC_MIMETYPE</span>,
@@ -663,15 +662,15 @@
     <span class="ident">TYSPEC_PACKAGENAME</span>,
     <span class="ident">TYSPEC_OBJECTID</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC_ByName</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC_ByName</span> {
     <span class="ident">pPackageName</span>: <span class="ident">LPOLESTR</span>,
     <span class="ident">PolicyId</span>: <span class="ident">GUID</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC_ByObjectId</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC_ByObjectId</span> {
     <span class="ident">ObjectId</span>: <span class="ident">GUID</span>,
     <span class="ident">PolicyId</span>: <span class="ident">GUID</span>,
 }}
-<span class="macro">UNION</span><span class="macro">!</span>{<span class="ident">union</span> <span class="ident">uCLSSPEC_u</span> {
+<span class="macro">UNION!</span>{<span class="kw">union</span> <span class="ident">uCLSSPEC_u</span> {
     [<span class="ident">u32</span>; <span class="number">8</span>] [<span class="ident">u64</span>; <span class="number">4</span>],
     <span class="ident">clsid</span> <span class="ident">clsid_mut</span>: <span class="ident">CLSID</span>,
     <span class="ident">pFileExt</span> <span class="ident">pFileExt_mut</span>: <span class="ident">LPOLESTR</span>,
@@ -681,11 +680,13 @@
     <span class="ident">ByName</span> <span class="ident">ByName_mut</span>: <span class="ident">uCLSSPEC_ByName</span>,
     <span class="ident">ByObjectId</span> <span class="ident">ByObjectId_mut</span>: <span class="ident">uCLSSPEC_ByObjectId</span>,
 }}
-<span class="macro">STRUCT</span><span class="macro">!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC</span> {
+<span class="macro">STRUCT!</span>{<span class="kw">struct</span> <span class="ident">uCLSSPEC</span> {
     <span class="ident">tyspec</span>: <span class="ident">DWORD</span>,
     <span class="ident">u</span>: <span class="ident">uCLSSPEC_u</span>,
 }}
 <span class="comment">// extern RPC_IF_HANDLE __MIDL_itf_wtypes_0000_0001_v0_0_c_ifspec;</span>
 <span class="comment">// extern RPC_IF_HANDLE __MIDL_itf_wtypes_0000_0001_v0_0_s_ifspec;</span>
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "winapi";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="winapi" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\widestring-0.4.0\src\lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../widestring/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `C:\Users\runneradmin\.cargo\registry\src\github.com-1ecc6299db9ec823\widestring-0.5.1\src\lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../widestring/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -396,63 +396,132 @@
 <span id="396">396</span>
 <span id="397">397</span>
 <span id="398">398</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! A wide string FFI module for converting to and from wide string variants.</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+</pre><pre class="rust"><code><span class="doccomment">//! A wide string FFI module for converting to and from wide string variants.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This module provides multiple types of wide strings: `U16String`, `U16CString`, `U32String`,</span>
-<span class="doccomment">//! and `U32CString`. These types are backed by two generic implementations parameterized by</span>
-<span class="doccomment">//! element size: `UString&lt;C&gt;` and `UCString&lt;C&gt;`. The `UCString` types are analogous to the</span>
-<span class="doccomment">//! standard `CString` FFI type, while the `UString` types are analogous to `OsString`. Otherwise,</span>
-<span class="doccomment">//! `U16` and `U32` types differ only in character width and encoding methods.</span>
+<span class="doccomment">//! This module provides multiple types of wide strings: [`U16String`], [`U16CString`],</span>
+<span class="doccomment">//! [`U32String`], and [`U32CString`]. These types are backed by two generic implementations</span>
+<span class="doccomment">//! parameterized by element size: [`UString&lt;C&gt;`] and [`UCString&lt;C&gt;`]. The `UCString` types are</span>
+<span class="doccomment">//! analogous to the standard [`CString`] FFI type, while the `UString` types are analogous to</span>
+<span class="doccomment">//! [`OsString`]. Otherwise, `U16` and `U32` types differ only in character width.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! For `U16String` and `U32String`, no guarantees are made about the underlying string data; they</span>
-<span class="doccomment">//! are simply a sequence of UTF-16 *code units* or UTF-32 code points, both of which may be</span>
-<span class="doccomment">//! ill-formed or contain nul values. `U16CString` and `U32CString`, on the other hand, are aware</span>
-<span class="doccomment">//! of nul values and are guaranteed to be terminated with a nul value (unless unchecked methods</span>
-<span class="doccomment">//! are used to construct the strings). Because `U16CString` and `U32CString` are C-style,</span>
-<span class="doccomment">//! nul-terminated strings, they will have no interior nul values. All four string types may still</span>
-<span class="doccomment">//! have unpaired UTF-16 surrogates or invalid UTF-32 code points; ill-formed data is preserved</span>
-<span class="doccomment">//! until conversion to a basic Rust `String`.</span>
+<span class="doccomment">//! For [`U16String`] and [`U32String`], no guarantees are made about the underlying string data;</span>
+<span class="doccomment">//! they are simply a sequence of UTF-16 *code units* or UTF-32 code points, both of which may be</span>
+<span class="doccomment">//! ill-formed or contain nul values. [`U16CString`] and [`U32CString`], on the other hand, are</span>
+<span class="doccomment">//! aware of nul values and are guaranteed to be terminated with a nul value (unless unchecked</span>
+<span class="doccomment">//! methods are used to construct the strings). Because [`U16CString`] and [`U32CString`] are</span>
+<span class="doccomment">//! C-style, nul-terminated strings, they will have no interior nul values. All four string types</span>
+<span class="doccomment">//! may still have unpaired UTF-16 surrogates or invalid UTF-32 code points; ill-formed data is</span>
+<span class="doccomment">//! preserved until conversion to a basic Rust [`String`].</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Use `U16String` or `U32String` when you simply need to pass-through strings, or when you know</span>
-<span class="doccomment">//! or don&#39;t care if you&#39;re not dealing with a nul-terminated string, such as when string lengths</span>
-<span class="doccomment">//! are provided and you are only reading strings from FFI, not writing them out to a FFI.</span>
+<span class="doccomment">//! Use [`U16String`] or [`U32String`] when you simply need to pass-through strings, or when you</span>
+<span class="doccomment">//! know or don&#39;t care if you&#39;re not dealing with a nul-terminated string, such as when string</span>
+<span class="doccomment">//! lengths are provided and you are only reading strings from FFI, not writing them out to a FFI.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Use `U16CString` or `U32CString` when you must properly handle nul values, and must deal with</span>
-<span class="doccomment">//! nul-terminated C-style wide strings, such as when you pass strings into FFI functions.</span>
+<span class="doccomment">//! Use [`U16CString`] or [`U32CString`] when you must properly handle nul values, and must deal</span>
+<span class="doccomment">//! with nul-terminated C-style wide strings, such as when you pass strings into FFI functions.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Relationship to other Rust Strings</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Standard Rust strings `String` and `str` are well-formed Unicode data encoded as UTF-8. The</span>
+<span class="doccomment">//! Standard Rust strings [`String`] and [`str`] are well-formed Unicode data encoded as UTF-8. The</span>
 <span class="doccomment">//! standard strings provide proper handling of Unicode and ensure strong safety guarantees.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! `CString` and `CStr` are strings used for C FFI. They handle nul-terminated C-style strings.</span>
-<span class="doccomment">//! However, they do not have a builtin encoding, and conversions between C-style and other Rust</span>
-<span class="doccomment">//! strings must specifically encode and decode the strings, and handle possibly invalid encoding</span>
-<span class="doccomment">//! data. They are safe to use only in passing string-like data back and forth from C APIs but do</span>
-<span class="doccomment">//! not provide any other guarantees, so may not be well-formed.</span>
+<span class="doccomment">//! [`CString`] and [`CStr`] are strings used for C FFI. They handle nul-terminated C-style</span>
+<span class="doccomment">//! strings. However, they do not have a builtin encoding, and  conversions between C-style and</span>
+<span class="doccomment">//! other Rust strings must specifically encode and decode the strings, and handle possibly invalid</span>
+<span class="doccomment">//! encoding data. They are safe to use only in passing string-like data back and forth from C APIs</span>
+<span class="doccomment">//! but do not provide any other guarantees, so may not be well-formed.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! `OsString` and `OsStr` are also strings for use with FFI. Unlike `CString`, they do no special</span>
-<span class="doccomment">//! handling of nul values, but instead have an OS-specified encoding. While, for example, on Linux</span>
-<span class="doccomment">//! systems this is usually the UTF-8 encoding, this is not the case for every platform. The</span>
-<span class="doccomment">//! encoding may not even be 8-bit: on Windows, `OsString` uses a malformed encoding sometimes</span>
-<span class="doccomment">//! referred to as &quot;WTF-8&quot;. In any case, like `CString`, `OsString` has no additional guarantees</span>
+<span class="doccomment">//! [`OsString`] and [`OsStr`] are also strings for use with FFI. Unlike [`CString`], they do no</span>
+<span class="doccomment">//! special handling of nul values, but instead have an OS-specified encoding. While, for example,</span>
+<span class="doccomment">//! on Linux systems this is usually the UTF-8 encoding, this is not the case for every platform.</span>
+<span class="doccomment">//! The encoding may not even be 8-bit: on Windows, [`OsString`] uses a malformed encoding sometimes</span>
+<span class="doccomment">//! referred to as &quot;WTF-8&quot;. In any case, like [`CString`], [`OsString`] has no additional guarantees</span>
 <span class="doccomment">//! and may not be well-formed.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Due to the loss of safety of these other string types, conversion to standard Rust `String` is</span>
+<span class="doccomment">//! Due to the loss of safety of these other string types, conversion to standard Rust [`String`] is</span>
 <span class="doccomment">//! lossy, and may require knowledge of the underlying encoding, including platform-specific</span>
 <span class="doccomment">//! quirks.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The wide strings in this crate are roughly based on the principles of the string types in</span>
-<span class="doccomment">//! `std::ffi`, though there are differences. `U16String`, `U32String`, `U16Str`, and `U32Str` are</span>
-<span class="doccomment">//! roughly similar in role to `OsString` and `OsStr`, while `U16CString`, `U32CString`, `U16CStr`,</span>
-<span class="doccomment">//! and `U32CStr` are roughly similar in role to `CString` and `CStr`. Conversion to FFI string</span>
-<span class="doccomment">//! types is generally very straight forward and safe, while conversion directly between standard</span>
-<span class="doccomment">//! Rust `String` is a lossy conversion just as `OsString` is.</span>
+<span class="doccomment">//! [`std::ffi`], though there are differences. [`U16String`], [`U32String`], [`U16Str`], and</span>
+<span class="doccomment">//! [`U32Str`] are roughly similar in role to [`OsString`] and [`OsStr`], while [`U16CString`],</span>
+<span class="doccomment">//! [`U32CString`], [`U16CStr`], and [`U32CStr`] are roughly similar in role to [`CString`] and</span>
+<span class="doccomment">//! [`CStr`]. Conversion to FFI string types is generally very straight forward and safe, while</span>
+<span class="doccomment">//! conversion directly between standard Rust [`String`] is a lossy conversion just as [`OsString`]</span>
+<span class="doccomment">//! is.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! `U16String` and `U16CString` are treated as though they use UTF-16 encoding, even if they may</span>
-<span class="doccomment">//! contain unpaired surrogates. `U32String` and `U32CString` are treated as though they use UTF-32</span>
-<span class="doccomment">//! encoding, even if they may contain values outside the valid Unicode character range.</span>
+<span class="doccomment">//! [`U16String`] and [`U16CString`] are treated as though they use UTF-16 encoding, even if they</span>
+<span class="doccomment">//! may contain unpaired surrogates. [`U32String`] and [`U32CString`] are treated as though they use</span>
+<span class="doccomment">//! UTF-32 encoding, even if they may contain values outside the valid Unicode character range.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Remarks on UTF-16 Code Units</span>
 <span class="doccomment">//!</span>
@@ -475,25 +544,37 @@
 <span class="doccomment">//! C/C++&#39;s `wchar_t` (and C++&#39;s corresponding `widestring`) varies in size depending on compiler</span>
 <span class="doccomment">//! and platform. Typically, `wchar_t` is 16-bits on Windows and 32-bits on most Unix-based</span>
 <span class="doccomment">//! platforms. For convenience when using `wchar_t`-based FFI&#39;s, type aliases for the corresponding</span>
-<span class="doccomment">//! string types are provided: `WideString` aliases `U16String` on Windows or `U32String`</span>
-<span class="doccomment">//! elsewhere, `WideCString` aliases `U16CString` or `U32CString`, etc. The `WideChar` alias</span>
-<span class="doccomment">//! is also provided, aliasing `u16` or `u32`.</span>
+<span class="doccomment">//! string types are provided: [`WideString`] aliases [`U16String`] on Windows or [`U32String`]</span>
+<span class="doccomment">//! elsewhere, [`WideCString`] aliases [`U16CString`] or [`U32CString`], etc. The [`WideChar`] alias</span>
+<span class="doccomment">//! is also provided, aliasing [`u16`] or [`u32`].</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! When not interacting with a FFI using `wchar_t`, it is recommended to use the string types</span>
 <span class="doccomment">//! directly rather than via the wide alias.</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! This crate supports `no_std` when default features are disabled. The `std` and `alloc` features</span>
+<span class="doccomment">//! (enabled by default) enable the [`U16String`], [`U32String`], [`U16CString`], and [`U32CString`]</span>
+<span class="doccomment">//! types and aliases. Other types do not require allocation and can be used in a `no_std`</span>
+<span class="doccomment">//! environment.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Nul values</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate uses the term legacy ASCII term &quot;nul&quot; to refer to Unicode code point `U+0000 NULL`</span>
+<span class="doccomment">//! and its associated code unit representation as zero-value bytes. This is to disambiguate this</span>
+<span class="doccomment">//! zero value from null pointer values. C-style strings end in a nul value, while regular Rust</span>
+<span class="doccomment">//! strings allow interior nul values and are not terminated with nul.</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! # Examples</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The following example uses `U16String` to get Windows error messages, since `FormatMessageW`</span>
+<span class="doccomment">//! The following example uses [`U16String`] to get Windows error messages, since `FormatMessageW`</span>
 <span class="doccomment">//! returns a string length for us and we don&#39;t need to pass error messages into other FFI</span>
 <span class="doccomment">//! functions so we don&#39;t need to worry about nul values.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! # #[cfg(not(windows))]</span>
+<span class="doccomment">//! # #[cfg(any(not(windows), not(feature = &quot;alloc&quot;)))]</span>
 <span class="doccomment">//! # fn main() {}</span>
 <span class="doccomment">//! # extern crate winapi;</span>
 <span class="doccomment">//! # extern crate widestring;</span>
-<span class="doccomment">//! # #[cfg(windows)]</span>
+<span class="doccomment">//! # #[cfg(all(windows, feature = &quot;alloc&quot;))]</span>
 <span class="doccomment">//! # fn main() {</span>
 <span class="doccomment">//! use winapi::um::winbase::{FormatMessageW, LocalFree, FORMAT_MESSAGE_FROM_SYSTEM,</span>
 <span class="doccomment">//!                           FORMAT_MESSAGE_ALLOCATE_BUFFER, FORMAT_MESSAGE_IGNORE_INSERTS};</span>
@@ -504,7 +585,7 @@
 <span class="doccomment">//! # use winapi::shared::minwindef::DWORD;</span>
 <span class="doccomment">//! # let error_code: DWORD = 0;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let U16Str: U16String;</span>
+<span class="doccomment">//! let s: U16String;</span>
 <span class="doccomment">//! unsafe {</span>
 <span class="doccomment">//!     // First, get a string buffer from some windows api such as FormatMessageW...</span>
 <span class="doccomment">//!     let mut buffer: LPWSTR = ptr::null_mut();</span>
@@ -519,25 +600,25 @@
 <span class="doccomment">//!                                 ptr::null_mut());</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     // Get the buffer as a wide string</span>
-<span class="doccomment">//!     U16Str = U16String::from_ptr(buffer, strlen as usize);</span>
+<span class="doccomment">//!     s = U16String::from_ptr(buffer, strlen as usize);</span>
 <span class="doccomment">//!     // Since U16String creates an owned copy, it&#39;s safe to free original buffer now</span>
 <span class="doccomment">//!     // If you didn&#39;t want an owned copy, you could use &amp;U16Str.</span>
 <span class="doccomment">//!     LocalFree(buffer as HLOCAL);</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! // Convert to a regular Rust String and use it to your heart&#39;s desire!</span>
-<span class="doccomment">//! let message = U16Str.to_string_lossy();</span>
+<span class="doccomment">//! let message = s.to_string_lossy();</span>
 <span class="doccomment">//! # assert_eq!(message, &quot;The operation completed successfully.\r\n&quot;);</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The following example is the functionally the same, only using `U16CString` instead.</span>
+<span class="doccomment">//! The following example is the functionally the same, only using [`U16CString`] instead.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! # #[cfg(not(windows))]</span>
+<span class="doccomment">//! # #[cfg(any(not(windows), not(feature = &quot;alloc&quot;)))]</span>
 <span class="doccomment">//! # fn main() {}</span>
 <span class="doccomment">//! # extern crate winapi;</span>
 <span class="doccomment">//! # extern crate widestring;</span>
-<span class="doccomment">//! # #[cfg(windows)]</span>
+<span class="doccomment">//! # #[cfg(all(windows, feature = &quot;alloc&quot;))]</span>
 <span class="doccomment">//! # fn main() {</span>
 <span class="doccomment">//! use winapi::um::winbase::{FormatMessageW, LocalFree, FORMAT_MESSAGE_FROM_SYSTEM,</span>
 <span class="doccomment">//!                           FORMAT_MESSAGE_ALLOCATE_BUFFER, FORMAT_MESSAGE_IGNORE_INSERTS};</span>
@@ -548,7 +629,7 @@
 <span class="doccomment">//! # use winapi::shared::minwindef::DWORD;</span>
 <span class="doccomment">//! # let error_code: DWORD = 0;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let U16Str: U16CString;</span>
+<span class="doccomment">//! let s: U16CString;</span>
 <span class="doccomment">//! unsafe {</span>
 <span class="doccomment">//!     // First, get a string buffer from some windows api such as FormatMessageW...</span>
 <span class="doccomment">//!     let mut buffer: LPWSTR = ptr::null_mut();</span>
@@ -563,36 +644,77 @@
 <span class="doccomment">//!                    ptr::null_mut());</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     // Get the buffer as a wide string</span>
-<span class="doccomment">//!     U16Str = U16CString::from_ptr_str(buffer);</span>
+<span class="doccomment">//!     s = U16CString::from_ptr_str(buffer);</span>
 <span class="doccomment">//!     // Since U16CString creates an owned copy, it&#39;s safe to free original buffer now</span>
 <span class="doccomment">//!     // If you didn&#39;t want an owned copy, you could use &amp;U16CStr.</span>
 <span class="doccomment">//!     LocalFree(buffer as HLOCAL);</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! // Convert to a regular Rust String and use it to your heart&#39;s desire!</span>
-<span class="doccomment">//! let message = U16Str.to_string_lossy();</span>
+<span class="doccomment">//! let message = s.to_string_lossy();</span>
 <span class="doccomment">//! # assert_eq!(message, &quot;The operation completed successfully.\r\n&quot;);</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`OsString`]: std::ffi::OsString</span>
+<span class="doccomment">//! [`OsStr`]: std::ffi::OsStr</span>
+<span class="doccomment">//! [`CString`]: std::ffi::CString</span>
+<span class="doccomment">//! [`CStr`]: std::ffi::CStr</span>
 
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">future_incompatible</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(
-    <span class="ident">unused</span>, <span class="ident">anonymous_parameters</span>, <span class="ident">missing_docs</span>, <span class="ident">missing_copy_implementations</span>,
-    <span class="ident">missing_debug_implementations</span>, <span class="ident">trivial_casts</span>, <span class="ident">trivial_numeric_casts</span>
+    <span class="ident">missing_docs</span>,
+    <span class="ident">missing_debug_implementations</span>,
+    <span class="ident">trivial_casts</span>,
+    <span class="ident">trivial_numeric_casts</span>,
+    <span class="ident">future_incompatible</span>
 )]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/widestring/0.5.1&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">test</span>(<span class="ident">attr</span>(<span class="ident">deny</span>(<span class="ident">warnings</span>), <span class="ident">allow</span>(<span class="ident">unused</span>))))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
 
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::DecodeUtf32Error</span>;
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">char::DecodeUtf16Error</span>, <span class="ident">fmt::Write</span>};
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">error</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iter</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)))]</span>
 <span class="kw">mod</span> <span class="ident">platform</span>;
-<span class="kw">mod</span> <span class="ident">ucstring</span>;
-<span class="kw">mod</span> <span class="ident">ustring</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ucstr</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)))]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ucstring</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ustr</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)))]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ustring</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ucstring</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ustring</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `error::ContainsNul` instead&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error::ContainsNul</span> <span class="kw">as</span> <span class="ident">NulError</span>;
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `error::FromUt32Error` instead&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error::FromUtf32Error</span>;
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error::MissingNulError</span>;
 
-<span class="doccomment">/// Marker trait for primitive types used to represent UTF character data. Should not be used</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ucstr</span>::{<span class="ident">U16CStr</span>, <span class="ident">U32CStr</span>, <span class="ident">UCStr</span>, <span class="ident">WideCStr</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)))]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ucstring</span>::{<span class="ident">U16CString</span>, <span class="ident">U32CString</span>, <span class="ident">UCString</span>, <span class="ident">WideCString</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ustr</span>::{<span class="ident">U16Str</span>, <span class="ident">U32Str</span>, <span class="ident">UStr</span>, <span class="ident">WideStr</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)))]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ustring</span>::{<span class="ident">U16String</span>, <span class="ident">U32String</span>, <span class="ident">UString</span>, <span class="ident">WideString</span>};
+
+<span class="doccomment">/// Marker trait for primitive types used to represent wide character data. Should not be used</span>
 <span class="doccomment">/// directly.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UChar</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Eq</span> {
-    <span class="doccomment">/// NUL character value</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UChar</span>: <span class="ident">core::fmt::Debug</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">private::Sealed</span> {
+    <span class="doccomment">/// NUL character value.</span>
     <span class="kw">const</span> <span class="ident">NUL</span>: <span class="self">Self</span>;
 }
 
@@ -604,196 +726,213 @@
     <span class="kw">const</span> <span class="ident">NUL</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
 }
 
-<span class="doccomment">/// String slice reference for `U16String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16Str` is to `U16String` as `str` is to `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16Str` is not aware of nul values. Strings may or may not be nul-terminated, and may</span>
-<span class="doccomment">/// contain invalid and ill-formed UTF-16 data. These strings are intended to be used with</span>
-<span class="doccomment">/// FFI functions that directly use string length, where the strings are known to have proper</span>
-<span class="doccomment">/// nul-termination already, or where strings are merely being passed through without modification.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `WideCStr` should be used instead of nul-aware strings are required.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16Str` can be converted to many other string types, including `OsString` and `String`, making</span>
-<span class="doccomment">/// proper Unicode FFI safe and easy.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U16Str</span> <span class="op">=</span> <span class="ident">UStr</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>;
+<span class="kw">mod</span> <span class="ident">private</span> {
+    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Sealed</span> {}
 
-<span class="doccomment">/// An owned, mutable &quot;wide&quot; string for FFI that is **not** nul-aware.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16String` is not aware of nul values. Strings may or may not be nul-terminated, and may</span>
-<span class="doccomment">/// contain invalid and ill-formed UTF-16 data. These strings are intended to be used with</span>
-<span class="doccomment">/// FFI functions that directly use string length, where the strings are known to have proper</span>
-<span class="doccomment">/// nul-termination already, or where strings are merely being passed through without modification.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `WideCString` should be used instead if nul-aware strings are required.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16String` can be converted to and from many other standard Rust string types, including</span>
-<span class="doccomment">/// `OsString` and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The following example constructs a `U16String` and shows how to convert a `U16String` to a</span>
-<span class="doccomment">/// regular Rust `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use widestring::U16String;</span>
-<span class="doccomment">/// let s = &quot;Test&quot;;</span>
-<span class="doccomment">/// // Create a wide string from the rust string</span>
-<span class="doccomment">/// let wstr = U16String::from_str(s);</span>
-<span class="doccomment">/// // Convert back to a rust string</span>
-<span class="doccomment">/// let rust_str = wstr.to_string_lossy();</span>
-<span class="doccomment">/// assert_eq!(rust_str, &quot;Test&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U16String</span> <span class="op">=</span> <span class="ident">UString</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// C-style wide string reference for `U16CString`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16CStr` is aware of nul values. Unless unchecked conversions are used, all `U16CStr`</span>
-<span class="doccomment">/// strings end with a nul-terminator in the underlying buffer and contain no internal nul values.</span>
-<span class="doccomment">/// The strings may still contain invalid or ill-formed UTF-16 data. These strings are intended to</span>
-<span class="doccomment">/// be used with FFI functions such as Windows API that may require nul-terminated strings.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16CStr` can be converted to and from many other string types, including `U16String`,</span>
-<span class="doccomment">/// `OsString`, and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U16CStr</span> <span class="op">=</span> <span class="ident">UCStr</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// An owned, mutable C-style &quot;wide&quot; string for FFI that is nul-aware and nul-terminated.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16CString` is aware of nul values. Unless unchecked conversions are used, all `U16CString`</span>
-<span class="doccomment">/// strings end with a nul-terminator in the underlying buffer and contain no internal nul values.</span>
-<span class="doccomment">/// The strings may still contain invalid or ill-formed UTF-16 data. These strings are intended to</span>
-<span class="doccomment">/// be used with FFI functions such as Windows API that may require nul-terminated strings.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U16CString` can be converted to and from many other string types, including `U16String`,</span>
-<span class="doccomment">/// `OsString`, and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The following example constructs a `U16CString` and shows how to convert a `U16CString` to a</span>
-<span class="doccomment">/// regular Rust `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use widestring::U16CString;</span>
-<span class="doccomment">/// let s = &quot;Test&quot;;</span>
-<span class="doccomment">/// // Create a wide string from the rust string</span>
-<span class="doccomment">/// let wstr = U16CString::from_str(s).unwrap();</span>
-<span class="doccomment">/// // Convert back to a rust string</span>
-<span class="doccomment">/// let rust_str = wstr.to_string_lossy();</span>
-<span class="doccomment">/// assert_eq!(rust_str, &quot;Test&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U16CString</span> <span class="op">=</span> <span class="ident">UCString</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// String slice reference for `U32String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32Str` is to `U32String` as `str` is to `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32Str` is not aware of nul values. Strings may or may not be nul-terminated, and may</span>
-<span class="doccomment">/// contain invalid and ill-formed UTF-32 data. These strings are intended to be used with</span>
-<span class="doccomment">/// FFI functions that directly use string length, where the strings are known to have proper</span>
-<span class="doccomment">/// nul-termination already, or where strings are merely being passed through without modification.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `WideCStr` should be used instead of nul-aware strings are required.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32Str` can be converted to many other string types, including `OsString` and `String`, making</span>
-<span class="doccomment">/// proper Unicode FFI safe and easy.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U32Str</span> <span class="op">=</span> <span class="ident">UStr</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// An owned, mutable 32-bit wide string for FFI that is **not** nul-aware.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32String` is not aware of nul values. Strings may or may not be nul-terminated, and may</span>
-<span class="doccomment">/// contain invalid and ill-formed UTF-32 data. These strings are intended to be used with</span>
-<span class="doccomment">/// FFI functions that directly use string length, where the strings are known to have proper</span>
-<span class="doccomment">/// nul-termination already, or where strings are merely being passed through without modification.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32CString` should be used instead if nul-aware 32-bit strings are required.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32String` can be converted to and from many other standard Rust string types, including</span>
-<span class="doccomment">/// `OsString` and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The following example constructs a `U32String` and shows how to convert a `U32String` to a</span>
-<span class="doccomment">/// regular Rust `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use widestring::U32String;</span>
-<span class="doccomment">/// let s = &quot;Test&quot;;</span>
-<span class="doccomment">/// // Create a wide string from the rust string</span>
-<span class="doccomment">/// let wstr = U32String::from_str(s);</span>
-<span class="doccomment">/// // Convert back to a rust string</span>
-<span class="doccomment">/// let rust_str = wstr.to_string_lossy();</span>
-<span class="doccomment">/// assert_eq!(rust_str, &quot;Test&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U32String</span> <span class="op">=</span> <span class="ident">UString</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// C-style wide string reference for `U32CString`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32CStr` is aware of nul values. Unless unchecked conversions are used, all `U32CStr`</span>
-<span class="doccomment">/// strings end with a nul-terminator in the underlying buffer and contain no internal nul values.</span>
-<span class="doccomment">/// The strings may still contain invalid or ill-formed UTF-32 data. These strings are intended to</span>
-<span class="doccomment">/// be used with FFI functions such as Windows API that may require nul-terminated strings.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32CStr` can be converted to and from many other string types, including `U32String`,</span>
-<span class="doccomment">/// `OsString`, and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U32CStr</span> <span class="op">=</span> <span class="ident">UCStr</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// An owned, mutable C-style wide string for FFI that is nul-aware and nul-terminated.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32CString` is aware of nul values. Unless unchecked conversions are used, all `U32CString`</span>
-<span class="doccomment">/// strings end with a nul-terminator in the underlying buffer and contain no internal nul values.</span>
-<span class="doccomment">/// The strings may still contain invalid or ill-formed UTF-32 data. These strings are intended to</span>
-<span class="doccomment">/// be used with FFI functions such as Windows API that may require nul-terminated strings.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `U32CString` can be converted to and from many other string types, including `U32String`,</span>
-<span class="doccomment">/// `OsString`, and `String`, making proper Unicode FFI safe and easy.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The following example constructs a `U32CString` and shows how to convert a `U32CString` to a</span>
-<span class="doccomment">/// regular Rust `String`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use widestring::U32CString;</span>
-<span class="doccomment">/// let s = &quot;Test&quot;;</span>
-<span class="doccomment">/// // Create a wide string from the rust string</span>
-<span class="doccomment">/// let wstr = U32CString::from_str(s).unwrap();</span>
-<span class="doccomment">/// // Convert back to a rust string</span>
-<span class="doccomment">/// let rust_str = wstr.to_string_lossy();</span>
-<span class="doccomment">/// assert_eq!(rust_str, &quot;Test&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">U32CString</span> <span class="op">=</span> <span class="ident">UCString</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
+    <span class="kw">impl</span> <span class="ident">Sealed</span> <span class="kw">for</span> <span class="ident">u16</span> {}
+    <span class="kw">impl</span> <span class="ident">Sealed</span> <span class="kw">for</span> <span class="ident">u32</span> {}
+}
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="doccomment">/// Alias for `U16String` or `U32String` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideString</span> <span class="op">=</span> <span class="ident">U32String</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="doccomment">/// Alias for `U16CString` or `U32CString` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideCString</span> <span class="op">=</span> <span class="ident">U32CString</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="doccomment">/// Alias for `U16Str` or `U32Str` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideStr</span> <span class="op">=</span> <span class="ident">U32Str</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="doccomment">/// Alias for `U16CStr` or `U32CStr` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideCStr</span> <span class="op">=</span> <span class="ident">U32CStr</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="doccomment">/// Alias for `u16` or `u32` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
+<span class="doccomment">/// Alias for [`u16`] or [`u32`] depending on platform. Intended to match typical C `wchar_t` size</span>
+<span class="doccomment">/// on platform.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideChar</span> <span class="op">=</span> <span class="ident">u32</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="doccomment">/// Alias for `U16String` or `U32String` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideString</span> <span class="op">=</span> <span class="ident">U16String</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="doccomment">/// Alias for `U16CString` or `U32CString` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideCString</span> <span class="op">=</span> <span class="ident">U16CString</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="doccomment">/// Alias for `U16Str` or `U32Str` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideStr</span> <span class="op">=</span> <span class="ident">U16Str</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="doccomment">/// Alias for `U16CStr` or `U32CStr` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideCStr</span> <span class="op">=</span> <span class="ident">U16CStr</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="doccomment">/// Alias for `u16` or `u32` depending on platform. Intended to match typical C `wchar_t` size on platform.</span>
+<span class="doccomment">/// Alias for [`u16`] or [`u32`] depending on platform. Intended to match typical C `wchar_t` size</span>
+<span class="doccomment">/// on platform.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WideChar</span> <span class="op">=</span> <span class="ident">u16</span>;
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "widestring";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">no_inline</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">core::char::decode_utf16</span>;
+
+<span class="doccomment">/// Creates a lossy decoder iterator over the possibly ill-formed UTF-16 encoded code points in</span>
+<span class="doccomment">/// `iter`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is equivalent to [`char::decode_utf16`][core::char::decode_utf16] except that any unpaired</span>
+<span class="doccomment">/// UTF-16 surrogate values are replaced by</span>
+<span class="doccomment">/// [`U+FFFD REPLACEMENT_CHARACTER`][core::char::REPLACEMENT_CHARACTER] (�) instead of returning</span>
+<span class="doccomment">/// errors.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use widestring::decode_utf16_lossy;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // 𝄞mus&lt;invalid&gt;ic&lt;invalid&gt;</span>
+<span class="doccomment">/// let v = [</span>
+<span class="doccomment">///     0xD834, 0xDD1E, 0x006d, 0x0075, 0x0073, 0xDD1E, 0x0069, 0x0063, 0xD834,</span>
+<span class="doccomment">/// ];</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// assert_eq!(</span>
+<span class="doccomment">/// decode_utf16_lossy(v.iter().copied()).collect::&lt;String&gt;(),</span>
+<span class="doccomment">/// &quot;𝄞mus�ic�&quot;</span>
+<span class="doccomment">/// );</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_utf16_lossy</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">iter::DecodeUtf16Lossy</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">I</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span><span class="ident">::IntoIter</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u16</span><span class="op">&gt;</span>,
+{
+    <span class="ident">iter::DecodeUtf16Lossy</span> {
+        <span class="ident">iter</span>: <span class="ident">core::char::decode_utf16</span>(<span class="ident">iter</span>),
+    }
+}
+
+<span class="doccomment">/// Creates a decoder iterator over UTF-32 encoded code points in `iter`, returning invalid values</span>
+<span class="doccomment">/// as `Err`s.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use widestring::decode_utf32;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // 𝄞mus&lt;invalid&gt;ic&lt;invalid&gt;</span>
+<span class="doccomment">/// let v = [</span>
+<span class="doccomment">///     0x1D11E, 0x6d, 0x75, 0x73, 0xDD1E, 0x69, 0x63, 0x23FD5A,</span>
+<span class="doccomment">/// ];</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// assert_eq!(</span>
+<span class="doccomment">///     decode_utf32(v.iter().copied())</span>
+<span class="doccomment">///         .map(|r| r.map_err(|e| e.invalid_code_point()))</span>
+<span class="doccomment">///         .collect::&lt;Vec&lt;_&gt;&gt;(),</span>
+<span class="doccomment">///     vec![</span>
+<span class="doccomment">///         Ok(&#39;𝄞&#39;),</span>
+<span class="doccomment">///         Ok(&#39;m&#39;), Ok(&#39;u&#39;), Ok(&#39;s&#39;),</span>
+<span class="doccomment">///         Err(0xDD1E),</span>
+<span class="doccomment">///         Ok(&#39;i&#39;), Ok(&#39;c&#39;),</span>
+<span class="doccomment">///         Err(0x23FD5A)</span>
+<span class="doccomment">///     ]</span>
+<span class="doccomment">/// );</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_utf32</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">iter::DecodeUtf32</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">I</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span><span class="ident">::IntoIter</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u32</span><span class="op">&gt;</span>,
+{
+    <span class="ident">iter::DecodeUtf32</span> {
+        <span class="ident">iter</span>: <span class="ident">iter</span>.<span class="ident">into_iter</span>(),
+    }
+}
+
+<span class="doccomment">/// Creates a lossy decoder iterator over the possibly ill-formed UTF-32 encoded code points in</span>
+<span class="doccomment">/// `iter`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is equivalent to [`decode_utf32`] except that any invalid UTF-32 values are replaced by</span>
+<span class="doccomment">/// [`U+FFFD REPLACEMENT_CHARACTER`][core::char::REPLACEMENT_CHARACTER] (�) instead of returning</span>
+<span class="doccomment">/// errors.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use widestring::decode_utf32_lossy;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // 𝄞mus&lt;invalid&gt;ic&lt;invalid&gt;</span>
+<span class="doccomment">/// let v = [</span>
+<span class="doccomment">///     0x1D11E, 0x6d, 0x75, 0x73, 0xDD1E, 0x69, 0x63, 0x23FD5A,</span>
+<span class="doccomment">/// ];</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// assert_eq!(</span>
+<span class="doccomment">/// decode_utf32_lossy(v.iter().copied()).collect::&lt;String&gt;(),</span>
+<span class="doccomment">/// &quot;𝄞mus�ic�&quot;</span>
+<span class="doccomment">/// );</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_utf32_lossy</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">iter::DecodeUtf32Lossy</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">I</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span><span class="ident">::IntoIter</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u32</span><span class="op">&gt;</span>,
+{
+    <span class="ident">iter::DecodeUtf32Lossy</span> {
+        <span class="ident">iter</span>: <span class="ident">decode_utf32</span>(<span class="ident">iter</span>),
+    }
+}
+
+<span class="doccomment">/// Debug implementation for any U16 string slice.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Properly encoded input data will output valid strings with escape sequences, however invalid</span>
+<span class="doccomment">/// encoding will purposefully output any unpaired surrogate as \&lt;XXXX&gt; which is not a valid escape</span>
+<span class="doccomment">/// sequence. This is intentional, as debug output is not meant to be parsed by read by humans.</span>
+<span class="kw">fn</span> <span class="ident">debug_fmt_u16</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>], <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="ident">debug_fmt_utf16_iter</span>(<span class="ident">core::char::decode_utf16</span>(<span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">copied</span>()), <span class="ident">fmt</span>)
+}
+
+<span class="doccomment">/// Debug implementation for any U16 string iterator.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Properly encoded input data will output valid strings with escape sequences, however invalid</span>
+<span class="doccomment">/// encoding will purposefully output any unpaired surrogate as \&lt;XXXX&gt; which is not a valid escape</span>
+<span class="doccomment">/// sequence. This is intentional, as debug output is not meant to be parsed by read by humans.</span>
+<span class="kw">fn</span> <span class="ident">debug_fmt_utf16_iter</span>(
+    <span class="ident">iter</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">char</span>, <span class="ident">DecodeUtf16Error</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="string">&#39;&quot;&#39;</span>)<span class="question-mark">?</span>;
+    <span class="kw">for</span> <span class="ident">res</span> <span class="kw">in</span> <span class="ident">iter</span> {
+        <span class="kw">match</span> <span class="ident">res</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">ch</span>) =&gt; {
+                <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="ident">ch</span>.<span class="ident">escape_debug</span>() {
+                    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)<span class="question-mark">?</span>;
+                }
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;\\&lt;{:X}&gt;&quot;</span>, <span class="ident">e</span>.<span class="ident">unpaired_surrogate</span>())<span class="question-mark">?</span>;
+            }
+        }
+    }
+    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="string">&#39;&quot;&#39;</span>)
+}
+
+<span class="doccomment">/// Debug implementation for any U16 string slice.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Properly encoded input data will output valid strings with escape sequences, however invalid</span>
+<span class="doccomment">/// encoding will purposefully output any  invalid code point as \&lt;XXXX&gt; which is not a valid escape</span>
+<span class="doccomment">/// sequence. This is intentional, as debug output is not meant to be parsed by read by humans.</span>
+<span class="kw">fn</span> <span class="ident">debug_fmt_u32</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">u32</span>], <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="ident">debug_fmt_utf32_iter</span>(<span class="ident">decode_utf32</span>(<span class="ident">s</span>.<span class="ident">iter</span>().<span class="ident">copied</span>()), <span class="ident">fmt</span>)
+}
+
+<span class="doccomment">/// Debug implementation for any U16 string iterator.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Properly encoded input data will output valid strings with escape sequences, however invalid</span>
+<span class="doccomment">/// encoding will purposefully output any  invalid code point as \&lt;XXXX&gt; which is not a valid escape</span>
+<span class="doccomment">/// sequence. This is intentional, as debug output is not meant to be parsed by read by humans.</span>
+<span class="kw">fn</span> <span class="ident">debug_fmt_utf32_iter</span>(
+    <span class="ident">iter</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">char</span>, <span class="ident">DecodeUtf32Error</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">fmt</span>: <span class="kw-2">&amp;mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="string">&#39;&quot;&#39;</span>)<span class="question-mark">?</span>;
+    <span class="kw">for</span> <span class="ident">res</span> <span class="kw">in</span> <span class="ident">iter</span> {
+        <span class="kw">match</span> <span class="ident">res</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">ch</span>) =&gt; {
+                <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="ident">ch</span>.<span class="ident">escape_debug</span>() {
+                    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)<span class="question-mark">?</span>;
+                }
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;\\&lt;{:X}&gt;&quot;</span>, <span class="ident">e</span>.<span class="ident">invalid_code_point</span>())<span class="question-mark">?</span>;
+            }
+        }
+    }
+    <span class="ident">fmt</span>.<span class="ident">write_char</span>(<span class="string">&#39;&quot;&#39;</span>)
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">fn</span> <span class="ident">is_utf16_surrogate</span>(<span class="ident">u</span>: <span class="ident">u16</span>) -&gt; <span class="ident">bool</span> {
+    (<span class="number">0xD800</span>..<span class="op">=</span><span class="number">0xDFFF</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">u</span>)
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">fn</span> <span class="ident">is_utf16_high_surrogate</span>(<span class="ident">u</span>: <span class="ident">u16</span>) -&gt; <span class="ident">bool</span> {
+    (<span class="number">0xD800</span>..<span class="op">=</span><span class="number">0xDBFF</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">u</span>)
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">fn</span> <span class="ident">is_utf16_low_surrogate</span>(<span class="ident">u</span>: <span class="ident">u16</span>) -&gt; <span class="ident">bool</span> {
+    (<span class="number">0xDC00</span>..<span class="op">=</span><span class="number">0xDFFF</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">u</span>)
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="widestring" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>
